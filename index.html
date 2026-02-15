@@ -5,296 +5,308 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe With Me</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ---------------- BASE ---------------- */
+/* ------------------ BASE ------------------ */
 
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
     font-family:'Playfair Display',serif;
-    background:#0f0c09;
-    color:#f5e6c8;
-    overflow-x:hidden;
+    overflow:hidden;
+    background:linear-gradient(120deg,#f4e7d4,#e6d5f5,#d7e8ff);
+    animation:bgShift 20s infinite alternate ease-in-out;
 }
 
-/* GOLDEN GLOW BACKGROUND */
+@keyframes bgShift{
+    0%{background:linear-gradient(120deg,#f4e7d4,#e6d5f5,#d7e8ff);}
+    100%{background:linear-gradient(120deg,#fceabb,#f8d7ff,#cce5ff);}
+}
 
-body::before{
+/* ------------------ OPENING OVERLAY ------------------ */
+
+#intro{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(20px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    transition:1.2s ease;
+    z-index:1000;
+}
+
+#intro h1{
+    font-size:28px;
+    width:80%;
+    color:#333;
+    line-height:1.5;
+}
+
+/* ------------------ MAIN PAGE ------------------ */
+
+#main{
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+}
+
+.section{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    font-size:24px;
+    transition:0.5s;
+    position:relative;
+}
+
+.section:hover{
+    transform:scale(1.03);
+}
+
+.section::after{
     content:"";
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at 20% 30%, rgba(255,180,60,0.15), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255,200,100,0.12), transparent 50%);
-    animation: shimmer 8s infinite alternate ease-in-out;
-    z-index:-1;
+    position:absolute;
+    width:60%;
+    height:2px;
+    bottom:30%;
+    background:rgba(255,255,255,0.4);
 }
 
-@keyframes shimmer{
-    0%{opacity:0.7;}
-    100%{opacity:1;}
-}
-
-/* ---------------- FIREFLIES ---------------- */
-
-.firefly{
-    position:fixed;
-    width:4px;
-    height:4px;
-    background:#ffd27a;
-    border-radius:50%;
-    box-shadow:0 0 8px #ffcc66;
-    animation: float 10s linear infinite;
+#mainTitle{
+    position:absolute;
+    top:20px;
+    width:100%;
+    text-align:center;
+    font-size:22px;
+    font-family:'Dancing Script',cursive;
     opacity:0.8;
 }
 
-@keyframes float{
-    from{transform:translateY(100vh);}
-    to{transform:translateY(-10vh);}
-}
-
-/* ---------------- LANDING ---------------- */
-
-#landing{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    flex-direction:column;
-    cursor:pointer;
-}
-
-#landing h1{
-    font-size:2rem;
-    letter-spacing:1px;
-}
-
-#landing p{
-    font-family:'Dancing Script',cursive;
-    margin-top:15px;
-    opacity:0.7;
-}
-
-/* ---------------- MAIN ---------------- */
-
-#main{
-    display:none;
-    padding:60px 20px;
-    text-align:center;
-}
-
-.main-text{
-    font-size:1.4rem;
-    line-height:1.6;
-    margin-bottom:50px;
-}
-
-.section-grid{
-    display:flex;
-    flex-direction:column;
-    gap:25px;
-}
-
-.card{
-    border:1px solid rgba(255,215,150,0.3);
-    padding:20px;
-    border-radius:15px;
-    backdrop-filter: blur(8px);
-    background:rgba(255,215,150,0.05);
-    cursor:pointer;
-    transition:all 0.4s ease;
-}
-
-.card:hover{
-    background:rgba(255,215,150,0.1);
-    transform:scale(1.02);
-}
-
-/* ---------------- MODAL ---------------- */
+/* ------------------ MODAL ------------------ */
 
 .modal{
     position:fixed;
-    inset:0;
+    top:10%;
+    left:10%;
+    width:80%;
+    height:80%;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.3);
+    box-shadow:0 0 40px rgba(255,215,150,0.2);
     display:none;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(8px);
-}
-
-.modal-content{
-    width:85%;
-    height:80%;
-    background:rgba(30,20,10,0.8);
+    padding:30px;
     border-radius:20px;
-    padding:20px;
-    overflow-y:auto;
-    border:1px solid rgba(255,215,150,0.3);
+    animation:fadeIn 0.8s ease;
+    overflow:hidden;
 }
 
-.close{
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(0.97);}
+    to{opacity:1; transform:scale(1);}
+}
+
+.modal video{
     position:absolute;
-    top:20px;
-    left:25px;
-    font-size:1.2rem;
-    cursor:pointer;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    filter:blur(6px) brightness(0.7);
 }
 
-.modal h2{
+.modalContent{
+    text-align:center;
+    width:100%;
+}
+
+.modal iframe{
+    width:100%;
+    height:80px;
+    margin:8px 0;
+    border-radius:10px;
+}
+
+.closeArea{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+}
+
+.signature{
+    position:absolute;
+    bottom:20px;
+    right:30px;
     font-family:'Dancing Script',cursive;
-    margin-bottom:20px;
-    font-size:1.6rem;
+    font-size:28px;
 }
 
-.song{
-    margin-bottom:25px;
+/* ------------------ FIRELIES ------------------ */
+
+.firefly{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:gold;
+    border-radius:50%;
+    animation:float 6s infinite ease-in-out alternate;
+    opacity:0.7;
 }
 
-/* SCROLL FADE */
-
-.fade{
-    opacity:0;
-    transform:translateY(20px);
-    transition:all 0.8s ease;
+@keyframes float{
+    from{transform:translateY(0);}
+    to{transform:translateY(-40px);}
 }
 
-.fade.show{
-    opacity:1;
-    transform:translateY(0);
+/* ------------------ PETALS ------------------ */
+
+.petal{
+    position:absolute;
+    width:10px;
+    height:14px;
+    background:pink;
+    border-radius:50%;
+    opacity:0.6;
+    animation:fall 8s linear infinite;
+}
+
+@keyframes fall{
+    from{transform:translateY(-20px);}
+    to{transform:translateY(400px);}
 }
 
 </style>
 </head>
-
 <body>
 
-<!-- FIREFLIES -->
-<script>
-for(let i=0;i<25;i++){
-    let f=document.createElement('div');
-    f.className='firefly';
-    f.style.left=Math.random()*100+'vw';
-    f.style.animationDuration=8+Math.random()*5+'s';
-    document.body.appendChild(f);
-}
-</script>
-
-<!-- LANDING -->
-<div id="landing">
-    <h1>You matter to me more than you realize.</h1>
-    <p>Click anywhere</p>
+<!-- INTRO -->
+<div id="intro" onclick="start()">
+    <h1>You matter to me more than you realize.<br><br>Tap to enter.</h1>
 </div>
 
-<!-- MAIN PAGE -->
-<div id="main">
+<!-- MAIN -->
+<div id="main" style="display:none;">
+    <div id="mainTitle">You matter to me more than you realize.</div>
 
-<div class="main-text fade">
-I’m not loud.  
-I’m not rushing.  
-I’m still here.
-</div>
-
-<div class="section-grid fade">
-
-<div class="card" onclick="openModal('morning')">
-🌅 Morning Light
-</div>
-
-<div class="card" onclick="openModal('midnight')">
-🌙 Midnight Thoughts
-</div>
-
-<div class="card" onclick="openModal('unspoken')">
-✨ What I Don’t Say
-</div>
-
-</div>
-
+    <div class="section" onclick="openModal('morning')">Morning</div>
+    <div class="section" onclick="openModal('day')">Day</div>
+    <div class="section" onclick="openModal('night')">Night</div>
+    <div class="section" onclick="openModal('after')">After Hours</div>
 </div>
 
 <!-- MODAL -->
+<div id="overlay" class="closeArea" onclick="closeModal()" style="display:none;"></div>
+
 <div id="modal" class="modal">
-<div class="modal-content">
-<div class="close" onclick="closeModal()">← Back</div>
-<div id="modal-body"></div>
-</div>
+
+    <!-- Background Video -->
+    <video id="bgVideo" autoplay muted loop>
+        <source src="morning.mp4" type="video/mp4">
+    </video>
+
+    <div class="modalContent" id="modalContent"></div>
+
+    <div class="signature">Deep</div>
 </div>
 
 <script>
 
-/* LANDING CLICK */
-
-document.getElementById("landing").onclick=function(){
-    document.getElementById("landing").style.display="none";
-    document.getElementById("main").style.display="block";
-    document.querySelectorAll('.fade').forEach(el=>{
-        setTimeout(()=>el.classList.add('show'),300);
-    });
+function start(){
+    document.getElementById("intro").style.opacity="0";
+    setTimeout(()=>{
+        document.getElementById("intro").style.display="none";
+        document.getElementById("main").style.display="flex";
+    },800);
 }
-
-/* MODAL */
 
 function openModal(type){
-    document.getElementById("modal").style.display="flex";
-    let content=document.getElementById("modal-body");
 
-    if(type==='morning'){
+    const modal=document.getElementById("modal");
+    const overlay=document.getElementById("overlay");
+    const content=document.getElementById("modalContent");
+    const video=document.getElementById("bgVideo");
+
+    overlay.style.display="block";
+    modal.style.display="flex";
+
+    if(type==="morning"){
+        video.src="morning.mp4";
         content.innerHTML=`
-        <h2>Some mornings feel lighter when I think of you.</h2>
-        ${songEmbed("Guess It's Love","2gupOLBb6OGYAWai6nlmDv")}
-        ${songEmbed("Lover","0XwRlvv3KlOu4HWlOH34XG")}
-        ${songEmbed("Thinking Of You","0rSU2KwpOCqLVDCPwd4WbE")}
-        ${songEmbed("With You","0xIuPDzJSnJywALez8dwKR")}
+        <h2>Morning Light</h2>
+        <iframe src="https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"></iframe>
         `;
     }
 
-    if(type==='midnight'){
+    if(type==="day"){
+        video.src="day.mp4";
         content.innerHTML=`
-        <h2>Even in silence, some hearts stay.</h2>
-        ${songEmbed("Departure Lane","7wGgYAOMhhRObOGdWlJ9Hi")}
-        ${songEmbed("Since Tum","5GnF4uvEcIibqcoYgzIlgS")}
-        ${songEmbed("Yaad","0CTLV9Fr5CEkvhqmBjvEIU")}
-        ${songEmbed("Ajj Kal Ve","7G7b3jsvPETNyccazdsubE")}
+        <h2>Golden Day</h2>
+        <iframe src="https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"></iframe>
         `;
     }
 
-    if(type==='unspoken'){
+    if(type==="night"){
+        video.src="night.mp4";
         content.innerHTML=`
-        <h2>Not everything needs noise to be real.</h2>
-        ${songEmbed("My Love","1tUYdjPkVHi9u0ecaFgnmD")}
-        ${songEmbed("Over and Over","7IU3w87VCx7qiar56GQ5OI")}
-        ${songEmbed("Falling Again","0K5LSPVXxIR30OlB3MHjN6")}
-        ${songEmbed("Mere Hisse De Phull","3zsrxaFaZFBrNY1EM69wMm")}
-        ${songEmbed("Priceless","3tOY2szKRlRHyTIETz4dSs")}
-        ${songEmbed("Vass Chal Da","4s71PFrRkQGLvISXotXyax")}
-        ${songEmbed("Dildariyan","16XBN3UaDs2v84EUMmHC1t")}
+        <h2>Quiet Night</h2>
+        <iframe src="https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"></iframe>
         `;
-    }
-}
 
-function songEmbed(title,id){
-return `
-<div class="song">
-<p>${title}</p>
-<iframe style="border-radius:12px"
-src="https://open.spotify.com/embed/track/${id}"
-width="100%" height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-</iframe>
-</div>
-`;
+        for(let i=0;i<12;i++){
+            let firefly=document.createElement("div");
+            firefly.className="firefly";
+            firefly.style.left=Math.random()*90+"%";
+            firefly.style.top=Math.random()*80+"%";
+            modal.appendChild(firefly);
+        }
+    }
+
+    if(type==="after"){
+        video.src="after.mp4";
+        content.innerHTML=`
+        <h2>After Hours</h2>
+        <iframe src="https://open.spotify.com/embed/track/16XBN3UaDs2v84EUMmHC1t"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/3mZLiEDAHIjZ8ms5Lxq33F"></iframe>
+        <iframe src="https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"></iframe>
+        `;
+
+        for(let i=0;i<10;i++){
+            let petal=document.createElement("div");
+            petal.className="petal";
+            petal.style.left=Math.random()*90+"%";
+            modal.appendChild(petal);
+        }
+    }
 }
 
 function closeModal(){
     document.getElementById("modal").style.display="none";
+    document.getElementById("overlay").style.display="none";
+    document.querySelectorAll(".firefly, .petal").forEach(el=>el.remove());
 }
 
 </script>
-
 </body>
 </html>

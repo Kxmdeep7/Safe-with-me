@@ -8,25 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
+font-family:'Dancing Script',cursive;
 }
 
 body{
-font-family:'Dancing Script', cursive;
-overflow:hidden;
 background:black;
 color:white;
+overflow:hidden;
 }
 
-/* =========================
-BACKGROUND VIDEO
-========================= */
-
-.bg-video{
+/* ===== Background Video ===== */
+video{
 position:fixed;
 top:0;
 left:0;
@@ -37,7 +33,7 @@ z-index:-2;
 transition:opacity 1s ease;
 }
 
-.bg-overlay{
+.overlay{
 position:fixed;
 top:0;
 left:0;
@@ -47,82 +43,57 @@ background:rgba(0,0,0,0.45);
 z-index:-1;
 }
 
-/* =========================
-INTRO SCREEN
-========================= */
-
-#intro{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
+/* ===== Main Page ===== */
+.main{
+height:100vh;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
 text-align:center;
-background:black;
-z-index:10;
-cursor:pointer;
+padding:20px;
 }
 
-#intro-text{
+.main h1{
 font-size:28px;
+margin-bottom:40px;
 opacity:0.9;
-padding:20px;
-}
-
-.fade-out{
-animation:fadeOut 1s forwards;
-}
-
-@keyframes fadeOut{
-to{opacity:0; visibility:hidden;}
-}
-
-/* =========================
-MAIN GRID
-========================= */
-
-#main{
-display:none;
-height:100vh;
-padding:20px;
-}
-
-.top-line{
-text-align:center;
-font-size:26px;
-margin-bottom:20px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
-height:70%;
+width:90%;
+max-width:400px;
 }
 
-.section-card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(6px);
-border-radius:20px;
+.section{
+height:120px;
+border:1px solid rgba(255,255,255,0.3);
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:24px;
+border-radius:15px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(6px);
 cursor:pointer;
 transition:0.3s;
 }
 
-.section-card:hover{
+.section:hover{
 background:rgba(255,255,255,0.15);
 }
 
-/* =========================
-MODAL
-========================= */
+.signature{
+position:fixed;
+bottom:15px;
+right:20px;
+font-size:22px;
+opacity:0.8;
+}
 
+/* ===== Modal ===== */
 .modal{
 position:fixed;
 top:0;
@@ -132,53 +103,56 @@ height:100%;
 display:none;
 align-items:center;
 justify-content:center;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.5);
 }
 
 .modal-content{
 width:80%;
-height:80%;
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(20px);
+height:75%;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(8px);
 border-radius:25px;
 padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
+overflow:hidden;
 position:relative;
 }
 
-.close-btn{
+.close{
 position:absolute;
 top:15px;
 left:20px;
 cursor:pointer;
-font-size:22px;
+font-size:20px;
+}
+
+.modal h2{
+margin-bottom:20px;
+text-align:center;
 }
 
 .song-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
-margin-top:20px;
 width:100%;
 }
 
-.song-card{
-background:rgba(255,255,255,0.15);
-border-radius:15px;
-padding:20px;
-text-align:center;
+.song{
+height:80px;
+border:1px solid rgba(255,255,255,0.3);
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
 cursor:pointer;
-transition:0.3s;
-}
-
-.song-card:hover{
-background:rgba(255,255,255,0.25);
 }
 
 .player{
-margin-top:20px;
+margin-top:15px;
 width:100%;
 display:none;
 }
@@ -187,107 +161,49 @@ display:none;
 width:100%;
 height:80px;
 border-radius:12px;
+border:none;
 }
-
-.signature{
-position:absolute;
-bottom:15px;
-right:20px;
-font-size:22px;
-opacity:0.8;
-}
-
 </style>
 </head>
+
 <body>
 
-<!-- BACKGROUND VIDEO -->
-<video id="bgVideo" class="bg-video" autoplay muted loop playsinline>
-<source src="Videosmain.mp4" type="video/mp4">
+<video id="bgVideo" autoplay muted loop>
+<source src="VideosMorning.mp4" type="video/mp4">
 </video>
-<div class="bg-overlay"></div>
 
-<!-- INTRO -->
-<div id="intro">
-<div id="intro-text">
-You matter to me more than you realize.
-<br><br>
-Click anywhere.
-<br><br>
-Deep
-</div>
-</div>
+<div class="overlay"></div>
 
-<!-- MAIN -->
-<div id="main">
-<div class="top-line">You matter to me more than you realize.</div>
+<div class="main">
+<h1>You matter to me more than you realize.</h1>
 
 <div class="grid">
-<div class="section-card" onclick="openSection('morning')">Morning</div>
-<div class="section-card" onclick="openSection('day')">Day</div>
-<div class="section-card" onclick="openSection('dusk')">Dusk</div>
-<div class="section-card" onclick="openSection('night')">Night</div>
+<div class="section" onclick="openModal('morning','VideosMorning.mp4')">Morning</div>
+<div class="section" onclick="openModal('day','VideosDay.mp4')">Day</div>
+<div class="section" onclick="openModal('dusk','VideosDusk.mp4')">Dusk</div>
+<div class="section" onclick="openModal('night','VideosNight.mp4')">Night</div>
+</div>
 </div>
 
 <div class="signature">Deep</div>
-</div>
 
-<!-- MODAL -->
-<div id="modal" class="modal" onclick="closeModal(event)">
+<!-- ===== Modal ===== -->
+<div class="modal" id="modal" onclick="closeModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
+<div class="close" onclick="forceClose()">Back</div>
+<h2 id="modalTitle"></h2>
 
-<div class="close-btn" onclick="closeModal()">← Back</div>
-
-<div id="modal-title" style="font-size:24px;margin-top:10px;"></div>
-
-<div class="song-grid" id="songs"></div>
+<div class="song-grid" id="songGrid"></div>
 
 <div class="player" id="player"></div>
 
 <div class="signature">Deep</div>
-
 </div>
 </div>
 
 <script>
 
-const intro = document.getElementById('intro');
-const main = document.getElementById('main');
-const modal = document.getElementById('modal');
-const bgVideo = document.getElementById('bgVideo');
-
-intro.addEventListener('click', ()=>{
-intro.classList.add('fade-out');
-setTimeout(()=>{
-intro.style.display='none';
-main.style.display='block';
-},1000);
-});
-
-const videoMap={
-morning:"Videosmorning.mp4",
-day:"Videosday.mp4",
-dusk:"Videosdusk.mp4",
-night:"Videosnight.mp4"
-};
-
-function openSection(section){
-
-bgVideo.style.opacity=0;
-
-setTimeout(()=>{
-bgVideo.src=videoMap[section];
-bgVideo.load();
-bgVideo.play();
-bgVideo.style.opacity=1;
-},500);
-
-document.getElementById('modal-title').innerText=section.toUpperCase();
-
-const songsContainer=document.getElementById('songs');
-songsContainer.innerHTML="";
-
-const songs={
+const songs = {
 morning:[
 ["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
 ["Guess It's Love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
@@ -295,43 +211,57 @@ morning:[
 ["With You","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
 ],
 day:[
-["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
-["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
-["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
-["Mere Hisse De Phull","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"]
+["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
+["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
+["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
+["Over And Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"]
 ],
 dusk:[
-["Over And Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
-["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
 ["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"],
-["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"]
+["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
+["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
+["Mere Hisse De Phull","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"]
 ],
 night:[
 ["Ajj Kal Ve","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"],
-["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
-["Vass Chal Da","https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"],
-["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"]
+["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
+["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
+["Vass Chal Da","https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"]
 ]
 };
 
-songs[section].forEach(song=>{
-let card=document.createElement('div');
-card.className='song-card';
-card.innerText=song[0];
-card.onclick=()=>{
-document.getElementById('player').innerHTML=
-`<iframe src="${song[1]}" allow="autoplay"></iframe>`;
-document.getElementById('player').style.display="block";
-};
-songsContainer.appendChild(card);
-});
+function openModal(section,videoSrc){
+document.getElementById('modal').style.display='flex';
+document.getElementById('modalTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
+document.getElementById('bgVideo').src=videoSrc;
 
-modal.style.display='flex';
+const grid=document.getElementById('songGrid');
+grid.innerHTML='';
+document.getElementById('player').style.display='none';
+
+songs[section].forEach(song=>{
+let div=document.createElement('div');
+div.className='song';
+div.innerText=song[0];
+div.onclick=function(){
+let player=document.getElementById('player');
+player.innerHTML=`<iframe src="${song[1]}" allow="autoplay; clipboard-write; encrypted-media"></iframe>`;
+player.style.display='block';
+};
+grid.appendChild(div);
+});
 }
 
 function closeModal(e){
-modal.style.display='none';
-document.getElementById('player').style.display="none";
+if(e.target.classList.contains('modal')){
+document.getElementById('modal').style.display='none';
+document.getElementById('player').style.display='none';
+}
+}
+
+function forceClose(){
+document.getElementById('modal').style.display='none';
+document.getElementById('player').style.display='none';
 }
 
 </script>

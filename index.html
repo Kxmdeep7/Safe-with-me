@@ -5,275 +5,273 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Deep</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap');
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-    font-family:'Poppins',sans-serif;
-    background:#0f0f12;
-    color:#fff;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Inter',sans-serif;
+    background:#0f0f0f;
+    color:white;
     overflow-x:hidden;
 }
 
-/* ===== POPUP ===== */
-#intro {
+/* ---------- OPENING MODAL ---------- */
+#introModal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.85);
     backdrop-filter:blur(8px);
+    background:rgba(0,0,0,0.65);
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
     padding:40px;
     z-index:1000;
-    opacity:1;
-    transition:opacity 1s ease;
+    animation:fadeIn 1.2s ease;
 }
 
-#intro.hidden {
-    opacity:0;
-    pointer-events:none;
-}
-
-#intro-box {
+#introModal .content{
     max-width:500px;
     font-size:1.2rem;
-    line-height:1.6;
+    line-height:1.7;
+    opacity:0;
+    animation:fadeText 2s forwards 0.5s;
 }
 
-/* ===== MAIN PAGE ===== */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeText{to{opacity:1}}
 
-.container {
-    padding:60px 20px;
-    max-width:900px;
-    margin:auto;
-}
-
-.section-grid {
+/* ---------- MAIN GRID ---------- */
+.main{
+    padding:40px 20px;
     display:grid;
-    grid-template-columns:1fr;
     gap:25px;
 }
 
-.card {
-    padding:25px;
-    border-radius:14px;
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(6px);
+.card{
+    padding:30px;
+    border-radius:20px;
+    background:linear-gradient(145deg,#1b1b1b,#141414);
+    border:1px solid rgba(255,255,255,0.05);
     cursor:pointer;
-    transition:all .4s ease;
+    transition:0.4s ease;
 }
 
-.card:hover {
-    background:rgba(255,255,255,0.1);
-    transform:translateY(-4px);
+.card:hover{
+    transform:translateY(-5px);
+    background:linear-gradient(145deg,#222,#181818);
 }
 
-.card h2 {
+.card h2{
     font-family:'Playfair Display',serif;
     font-weight:500;
     margin-bottom:8px;
 }
 
-/* ===== MODAL ===== */
+.card p{
+    font-size:0.9rem;
+    opacity:0.6;
+}
 
-.modal {
+/* ---------- SECTION MODAL ---------- */
+.sectionModal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.8);
-    display:flex;
+    display:none;
     align-items:center;
     justify-content:center;
-    padding:20px;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .6s ease;
+    z-index:999;
 }
 
-.modal.active {
-    opacity:1;
-    pointer-events:auto;
-}
-
-.modal-content {
+.sectionContent{
     width:80%;
-    max-width:700px;
-    background:rgba(0,0,0,0.75);
-    backdrop-filter:blur(12px);
-    border-radius:18px;
-    padding:30px;
+    height:80%;
+    border-radius:25px;
+    overflow:hidden;
     position:relative;
-    animation:fadeIn .8s ease;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:30px;
+    backdrop-filter:blur(6px);
+    background:rgba(0,0,0,0.55);
+    animation:fadeIn 0.6s ease;
 }
 
-@keyframes fadeIn {
-    from { transform:translateY(20px); opacity:0; }
-    to { transform:translateY(0); opacity:1; }
+.sectionContent video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    filter:brightness(0.6);
 }
 
-.close-btn {
+.sectionText{
+    max-width:500px;
+    font-size:1.1rem;
+    line-height:1.7;
+}
+
+.signature{
+    margin-top:20px;
+    font-family:'Playfair Display',serif;
+    font-size:1.5rem;
+    opacity:0.8;
+}
+
+.backBtn{
     position:absolute;
     top:15px;
     left:20px;
-    cursor:pointer;
     font-size:0.9rem;
-    opacity:.6;
+    cursor:pointer;
+    opacity:0.7;
 }
 
-.close-btn:hover { opacity:1; }
+.backBtn:hover{opacity:1}
 
-.modal h2 {
-    font-family:'Playfair Display',serif;
-    font-weight:500;
-    margin-bottom:15px;
-}
-
-.modal p {
-    margin-bottom:20px;
-    line-height:1.6;
-    opacity:.85;
-}
-
-iframe {
-    border-radius:12px;
-    margin-top:10px;
-}
-
-.signature {
+iframe{
     margin-top:25px;
-    font-family:'Playfair Display',serif;
-    font-size:1.4rem;
-    text-align:right;
-    opacity:.7;
+    border-radius:12px;
 }
 
+/* responsive */
+@media(min-width:700px){
+    .main{max-width:600px;margin:auto;}
+}
 </style>
 </head>
 <body>
 
-<!-- INTRO POPUP -->
-<div id="intro" onclick="closeIntro()">
-    <div id="intro-box">
-        <p>You matter to me more than you realize.</p>
-        <br>
-        <p>This isn’t loud.<br>It’s just honest.</p>
-        <br>
-        <p style="opacity:.6;">Tap anywhere.</p>
+<!-- INTRO MODAL -->
+<div id="introModal" onclick="closeIntro()">
+    <div class="content">
+        You matter to me more than you realize.<br><br>
+        This isn’t a reminder.<br>
+        It’s just something quiet… meant for you.<br><br>
+        No pressure.<br>
+        No expectations.<br>
+        Just intention.<br><br>
+        — Deep
     </div>
 </div>
 
-<div class="container">
+<!-- MAIN PAGE -->
+<div class="main">
 
-    <div class="section-grid">
+<div class="card" onclick="openSection('morning')">
+    <h2>Morning Light</h2>
+    <p>Some feelings rise slowly… like light.</p>
+</div>
 
-        <div class="card" onclick="openModal('morning')">
-            <h2>Morning Light</h2>
-            <p>Some songs feel like the soft beginning of something real.</p>
-        </div>
+<div class="card" onclick="openSection('wind')">
+    <h2>The Quiet Waiting</h2>
+    <p>Some presences don’t fade — even in silence.</p>
+</div>
 
-        <div class="card" onclick="openModal('silence')">
-            <h2>Between The Silence</h2>
-            <p>Not everything needs words to be understood.</p>
-        </div>
+<div class="card" onclick="openSection('night')">
+    <h2>Midnight Thoughts</h2>
+    <p>Some memories stay softer than they should.</p>
+</div>
 
-        <div class="card" onclick="openModal('wonder')">
-            <h2>If You Ever Wonder</h2>
-            <p>Just in case you ever think you’re alone.</p>
-        </div>
-
-        <div class="card" onclick="openModal('still')">
-            <h2>Still Here</h2>
-            <p>No pressure. No rush. Just steady presence.</p>
-        </div>
-
-    </div>
+<div class="card" onclick="openSection('hope')">
+    <h2>Gentle Hope</h2>
+    <p>Not everything needs a name. Some things need honesty.</p>
+</div>
 
 </div>
 
-<!-- MODAL -->
-<div id="modal" class="modal" onclick="outsideClose(event)">
-    <div class="modal-content" id="modalContent">
-        <span class="close-btn" onclick="closeModal()">← Back</span>
-        <div id="modalBody"></div>
+<!-- SECTION TEMPLATE -->
+<div id="sectionModal" class="sectionModal" onclick="outsideClick(event)">
+    <div class="sectionContent" id="sectionContent">
+
+        <div class="backBtn" onclick="closeSection()">← back</div>
+
+        <video id="bgVideo" autoplay muted loop></video>
+
+        <div class="sectionText" id="sectionText"></div>
+
+        <div class="signature">Deep</div>
+
+        <iframe id="spotifyPlayer" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media;"></iframe>
+
     </div>
 </div>
 
 <script>
 
 function closeIntro(){
-    document.getElementById('intro').classList.add('hidden');
+    document.getElementById("introModal").style.display="none";
 }
 
-function openModal(section){
-    const modal = document.getElementById('modal');
-    const body = document.getElementById('modalBody');
+function openSection(type){
+    const modal = document.getElementById("sectionModal");
+    const text = document.getElementById("sectionText");
+    const video = document.getElementById("bgVideo");
+    const spotify = document.getElementById("spotifyPlayer");
 
-    let content = '';
+    modal.style.display="flex";
 
-    if(section === 'morning'){
-        content = `
-        <h2>Morning Light</h2>
-        <p>There’s something about mornings…<br>
-        quiet, hopeful, soft.<br>
-        This reminded me of you.</p>
-        <iframe src="https://open.spotify.com/embed/track/3mZLiEDAHIjZ8ms5Lxq33F"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div class="signature">Deep</div>
+    if(type==="morning"){
+        video.src="morning.mp4";
+        text.innerHTML=`
+        I don’t know when it happened.<br>
+        But somewhere between ordinary days,<br>
+        you became my favorite part of them.<br><br>
+        Not in a loud way.<br>
+        In a steady way.
         `;
+        spotify.src="https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG";
     }
 
-    if(section === 'silence'){
-        content = `
-        <h2>Between The Silence</h2>
-        <p>Even in distance…<br>
-        some connections stay steady.</p>
-        <iframe src="https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div class="signature">Deep</div>
+    if(type==="wind"){
+        video.src="wind.mp4";
+        text.innerHTML=`
+        I don’t always speak.<br>
+        I don’t always reach.<br><br>
+        But that doesn’t mean I disappear.<br>
+        Some things stay… quietly.
         `;
+        spotify.src="https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE";
     }
 
-    if(section === 'wonder'){
-        content = `
-        <h2>If You Ever Wonder</h2>
-        <p>If the thought ever crosses your mind…<br>
-        yes, I still care.</p>
-        <iframe src="https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div class="signature">Deep</div>
+    if(type==="night"){
+        video.src="night.mp4";
+        text.innerHTML=`
+        The ID card incident.<br>
+        I was confident.<br>
+        You were right.<br><br>
+        I don’t remember it because I was wrong.<br>
+        I remember it because you smiled.
         `;
+        spotify.src="https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi";
     }
 
-    if(section === 'still'){
-        content = `
-        <h2>Still Here</h2>
-        <p>No grand speeches.<br>
-        No dramatic promises.<br>
-        Just… here.</p>
-        <iframe src="https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div class="signature">Deep</div>
+    if(type==="hope"){
+        video.src="hope.mp4";
+        text.innerHTML=`
+        I’m not here to rush you.<br>
+        I’m not here to convince you.<br><br>
+        I just want you to know —<br>
+        there is someone<br>
+        who chooses you quietly.
         `;
+        spotify.src="https://open.spotify.com/embed/track/3mZLiEDAHIjZ8ms5Lxq33F";
     }
-
-    body.innerHTML = content;
-    modal.classList.add('active');
 }
 
-function closeModal(){
-    document.getElementById('modal').classList.remove('active');
+function closeSection(){
+    document.getElementById("sectionModal").style.display="none";
 }
 
-function outsideClose(e){
-    if(e.target.id === 'modal'){
-        closeModal();
+function outsideClick(e){
+    if(e.target.id==="sectionModal"){
+        closeSection();
     }
 }
 

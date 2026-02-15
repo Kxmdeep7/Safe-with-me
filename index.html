@@ -13,28 +13,29 @@ html,body{
 height:100%;
 font-family:'Caveat',cursive;
 background:#000;
-overflow:hidden;
 color:white;
+overflow:hidden;
 }
 
-/* Background Video */
-video.bg{
-position:fixed;
-top:0;left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-2;
-transition:opacity 1.2s ease;
+/* Animated Background */
+body{
+background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c1c);
+background-size:400% 400%;
+animation:gradientMove 18s ease infinite;
 }
 
-/* Soft Glow */
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* Soft glow */
 body::after{
 content:'';
 position:fixed;
 inset:0;
-background:radial-gradient(circle at center, rgba(255,200,150,0.12), transparent 70%);
-z-index:-1;
+background:radial-gradient(circle at center, rgba(255,180,120,0.15), transparent 70%);
 pointer-events:none;
 }
 
@@ -48,6 +49,7 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:20;
+transition:opacity .6s ease;
 }
 
 .story-img{
@@ -57,50 +59,35 @@ height:65vh;
 background-size:cover;
 background-position:center;
 border-radius:20px;
-box-shadow:0 0 30px rgba(255,255,255,0.25);
-transition:opacity .5s ease;
-}
-
-.story-controls{
-margin-top:20px;
-display:flex;
-gap:25px;
-}
-
-.story-btn{
-padding:10px 18px;
-background:rgba(255,255,255,0.12);
-border:1px solid rgba(255,255,255,0.3);
-border-radius:30px;
-cursor:pointer;
+box-shadow:0 0 35px rgba(255,255,255,0.2);
+transition:.5s ease;
 }
 
 .enter-btn{
 margin-top:25px;
-font-size:24px;
-display:none;
+padding:12px 30px;
+border-radius:30px;
+background:rgba(255,255,255,0.15);
+border:1px solid rgba(255,255,255,0.4);
+box-shadow:0 0 15px rgba(255,255,255,0.5);
 cursor:pointer;
-animation:glow 2s infinite alternate;
+display:none;
 }
 
-@keyframes glow{
-from{opacity:0.6;}
-to{opacity:1;}
-}
-
-/* MAIN PAGE */
+/* MAIN */
 #main{
 display:none;
 height:100%;
+display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:20px;
 text-align:center;
+padding:20px;
 }
 
 .main-title{
-font-size:30px;
+font-size:26px;
 margin-bottom:35px;
 text-shadow:0 0 15px rgba(255,255,255,0.4);
 }
@@ -108,29 +95,29 @@ text-shadow:0 0 15px rgba(255,255,255,0.4);
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:20px;
+gap:18px;
 width:100%;
-max-width:420px;
+max-width:400px;
 }
 
 .section-card{
-padding:35px 10px;
-background:rgba(255,255,255,0.10);
-border-radius:20px;
-backdrop-filter:blur(10px);
+padding:30px 10px;
+background:rgba(255,255,255,0.08);
+border-radius:18px;
+backdrop-filter:blur(6px);
 cursor:pointer;
 transition:.3s;
 }
 
-.section-card:active{
-transform:scale(.97);
+.section-card:hover{
+background:rgba(255,255,255,0.15);
 }
 
 .signature{
 position:fixed;
-bottom:15px;
+bottom:18px;
 right:20px;
-font-size:24px;
+font-size:22px;
 opacity:.85;
 }
 
@@ -141,88 +128,76 @@ inset:0;
 display:none;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.55);
+background:rgba(0,0,0,0.65);
 }
 
 .modal-content{
 width:90%;
-height:90%;
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(5px);
-border-radius:25px;
+height:88%;
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(4px);
+border-radius:22px;
 padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
 position:relative;
-overflow:hidden;
-}
-
-.back-btn{
-position:absolute;
-top:15px;
-left:20px;
-font-size:22px;
-cursor:pointer;
 }
 
 .modal h2{
-margin:15px 0 25px 0;
-font-size:28px;
+margin-bottom:18px;
 }
 
 .song-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:15px;
+gap:14px;
 width:100%;
 }
 
 .song-card{
 aspect-ratio:1/1;
 background:rgba(255,255,255,0.12);
-border-radius:18px;
+border-radius:16px;
 display:flex;
 justify-content:center;
 align-items:center;
-cursor:pointer;
 text-align:center;
 padding:10px;
-font-size:20px;
+cursor:pointer;
+transition:.3s;
+}
+
+.song-card:hover{
+background:rgba(255,255,255,0.22);
 }
 
 .player{
 width:100%;
-margin-top:18px;
+margin-top:15px;
 display:none;
 }
 
 .player iframe{
 width:100%;
-height:85px;
+height:80px;
 border:none;
-border-radius:15px;
+border-radius:12px;
+}
+
+.close-zone{
+position:absolute;
+inset:0;
+z-index:-1;
 }
 </style>
 </head>
-
 <body>
-
-<!-- Background -->
-<video id="bgVideo" class="bg" autoplay muted loop playsinline>
-<source src="Videosmain.mp4" type="video/mp4">
-</video>
 
 <!-- STORY -->
 <div id="story">
 <div id="storyImage" class="story-img"></div>
-
-<div class="story-controls">
-<div class="story-btn" onclick="prevStory()">◀</div>
-<div class="story-btn" onclick="nextStory()">▶</div>
-</div>
-
-<div class="enter-btn" onclick="enterSite()">Tap Here</div>
+<div id="enterBtn" class="enter-btn" onclick="enterSite()">Tap to Enter</div>
 </div>
 
 <!-- MAIN -->
@@ -230,10 +205,10 @@ border-radius:15px;
 <div class="main-title">You matter to me more than you realize.</div>
 
 <div class="grid">
-<div class="section-card" onclick="openSection('morning','Videosmorning.mp4')">🌅 Morning Light</div>
-<div class="section-card" onclick="openSection('day','Videosday.mp4')">☀ Day Calm</div>
-<div class="section-card" onclick="openSection('dusk','Videosdusk.mp4')">🌇 Golden Dusk</div>
-<div class="section-card" onclick="openSection('night','Videosnight.mp4')">🌙 Midnight Glow</div>
+<div class="section-card" onclick="openSection('morning')">🌅 Morning Light</div>
+<div class="section-card" onclick="openSection('day')">☀️ Day Calm</div>
+<div class="section-card" onclick="openSection('dusk')">🌇 Golden Dusk</div>
+<div class="section-card" onclick="openSection('night')">🌙 Midnight Glow</div>
 </div>
 
 <div class="signature">Deep</div>
@@ -242,80 +217,52 @@ border-radius:15px;
 <!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
-
-<div class="back-btn" onclick="closeModalManual()">← Back</div>
-
 <h2 id="modalTitle"></h2>
-
 <div class="song-grid" id="songs"></div>
-
 <div class="player" id="player"></div>
-
 <div class="signature">Deep</div>
 </div>
 </div>
 
 <script>
 
-/* HAPTIC */
-function vibrate(){
-if(navigator.vibrate){
-navigator.vibrate(15);
-}
-}
-
-/* STORY */
-const images=[
-'image1.jpg',
-'image2.jpg',
-'image3.jpg'
-];
-
+/* STORY IMAGES */
+const images=['1.jpg','2.jpg','3.jpg'];
 let current=0;
 const storyImg=document.getElementById('storyImage');
-const enterBtn=document.querySelector('.enter-btn');
-
-function updateStory(){
+const enterBtn=document.getElementById('enterBtn');
 storyImg.style.backgroundImage=`url(${images[current]})`;
-enterBtn.style.display = current === images.length-1 ? 'block' : 'none';
-}
 
-function nextStory(){
-if(current < images.length-1){
+storyImg.addEventListener('click',()=>{
+if(current<images.length-1){
 current++;
-updateStory();
-vibrate();
+storyImg.style.backgroundImage=`url(${images[current]})`;
+if(current===images.length-1){
+enterBtn.style.display='block';
 }
 }
-
-function prevStory(){
-if(current > 0){
-current--;
-updateStory();
-vibrate();
-}
-}
-
-updateStory();
+});
 
 function enterSite(){
+document.getElementById('story').style.opacity='0';
+setTimeout(()=>{
 document.getElementById('story').style.display='none';
 document.getElementById('main').style.display='flex';
-vibrate();
+},600);
 }
 
-/* SONG DATA */
+/* SONGS */
 const songs={
 morning:[
 ["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["Guess it's Love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["Thinking of You","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["With You","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
+["Guess it's love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
+["Thinking of you","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
+["With you","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
 ],
 day:[
 ["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
 ["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
-["Over & Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
+["Over and Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
 ["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
 ],
 dusk:[
@@ -332,49 +279,32 @@ night:[
 ]
 };
 
-function openSection(section,video){
-
-const bg=document.getElementById('bgVideo');
-bg.pause();
-bg.innerHTML=`<source src="${video}" type="video/mp4">`;
-bg.load();
-bg.play();
-
+function openSection(section){
 document.getElementById('modal').style.display='flex';
-document.getElementById('modalTitle').innerText=
-section.charAt(0).toUpperCase()+section.slice(1);
+document.getElementById('modalTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
 
 const grid=document.getElementById('songs');
 grid.innerHTML='';
-
 songs[section].forEach(song=>{
 const div=document.createElement('div');
 div.className='song-card';
 div.innerText=song[0];
-div.onclick=()=>{
-playSong(song[1]);
-vibrate();
-};
+div.onclick=()=>playSong(song[1]);
 grid.appendChild(div);
 });
 }
 
 function playSong(link){
 const player=document.getElementById('player');
-player.innerHTML=`<iframe src="${link}" allow="autoplay; clipboard-write; encrypted-media;"></iframe>`;
+player.innerHTML=`<iframe src="${link}" allow="autoplay; encrypted-media;"></iframe>`;
 player.style.display='block';
 }
 
 function closeModal(e){
 if(e.target.id==='modal'){
-closeModalManual();
-}
-}
-
-function closeModalManual(){
 document.getElementById('modal').style.display='none';
 document.getElementById('player').style.display='none';
-vibrate();
+}
 }
 
 </script>

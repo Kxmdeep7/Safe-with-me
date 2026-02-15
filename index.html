@@ -17,7 +17,7 @@ overflow:hidden;
 color:white;
 }
 
-/* BACKGROUND VIDEO */
+/* Background Video */
 video.bg{
 position:fixed;
 top:0;left:0;
@@ -25,20 +25,20 @@ width:100%;
 height:100%;
 object-fit:cover;
 z-index:-2;
-transition:opacity 1.5s ease;
+transition:opacity 1.2s ease;
 }
 
-/* soft glow */
+/* Soft Glow */
 body::after{
 content:'';
 position:fixed;
 inset:0;
-background:radial-gradient(circle at center, rgba(255,200,150,0.15), transparent 70%);
+background:radial-gradient(circle at center, rgba(255,200,150,0.12), transparent 70%);
 z-index:-1;
 pointer-events:none;
 }
 
-/* STORY INTRO */
+/* STORY */
 #story{
 position:fixed;
 inset:0;
@@ -48,7 +48,6 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:20;
-transition:opacity .8s ease;
 }
 
 .story-img{
@@ -58,31 +57,41 @@ height:65vh;
 background-size:cover;
 background-position:center;
 border-radius:20px;
-box-shadow:0 0 30px rgba(255,255,255,0.2);
+box-shadow:0 0 30px rgba(255,255,255,0.25);
 transition:opacity .5s ease;
+}
+
+.story-controls{
+margin-top:20px;
+display:flex;
+gap:25px;
+}
+
+.story-btn{
+padding:10px 18px;
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.3);
+border-radius:30px;
+cursor:pointer;
 }
 
 .enter-btn{
 margin-top:25px;
-font-size:22px;
-padding:10px 25px;
-border-radius:30px;
-background:rgba(255,255,255,0.1);
-border:1px solid rgba(255,255,255,0.4);
+font-size:24px;
+display:none;
 cursor:pointer;
 animation:glow 2s infinite alternate;
 }
 
 @keyframes glow{
-from{box-shadow:0 0 10px rgba(255,255,255,.2);}
-to{box-shadow:0 0 25px rgba(255,255,255,.6);}
+from{opacity:0.6;}
+to{opacity:1;}
 }
 
-/* MAIN */
+/* MAIN PAGE */
 #main{
 display:none;
 height:100%;
-display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
@@ -91,8 +100,8 @@ text-align:center;
 }
 
 .main-title{
-font-size:28px;
-margin-bottom:30px;
+font-size:30px;
+margin-bottom:35px;
 text-shadow:0 0 15px rgba(255,255,255,0.4);
 }
 
@@ -106,16 +115,15 @@ max-width:420px;
 
 .section-card{
 padding:35px 10px;
-background:rgba(255,255,255,0.08);
-border-radius:18px;
-backdrop-filter:blur(8px);
+background:rgba(255,255,255,0.10);
+border-radius:20px;
+backdrop-filter:blur(10px);
 cursor:pointer;
 transition:.3s;
-font-size:20px;
 }
 
 .section-card:active{
-transform:scale(.95);
+transform:scale(.97);
 }
 
 .signature{
@@ -123,7 +131,7 @@ position:fixed;
 bottom:15px;
 right:20px;
 font-size:24px;
-opacity:.8;
+opacity:.85;
 }
 
 /* MODAL */
@@ -133,20 +141,34 @@ inset:0;
 display:none;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.4);
+background:rgba(0,0,0,0.55);
 }
 
 .modal-content{
 width:90%;
 height:90%;
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(4px);
-border-radius:20px;
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(5px);
+border-radius:25px;
 padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
+position:relative;
 overflow:hidden;
+}
+
+.back-btn{
+position:absolute;
+top:15px;
+left:20px;
+font-size:22px;
+cursor:pointer;
+}
+
+.modal h2{
+margin:15px 0 25px 0;
+font-size:28px;
 }
 
 .song-grid{
@@ -154,39 +176,39 @@ display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
 width:100%;
-margin-top:20px;
 }
 
 .song-card{
 aspect-ratio:1/1;
-background:rgba(255,255,255,0.1);
-border-radius:15px;
+background:rgba(255,255,255,0.12);
+border-radius:18px;
 display:flex;
 justify-content:center;
 align-items:center;
 cursor:pointer;
 text-align:center;
 padding:10px;
-font-size:18px;
+font-size:20px;
 }
 
 .player{
 width:100%;
-margin-top:15px;
+margin-top:18px;
 display:none;
 }
 
 .player iframe{
 width:100%;
-height:80px;
+height:85px;
 border:none;
-border-radius:12px;
+border-radius:15px;
 }
 </style>
 </head>
+
 <body>
 
-<!-- BACKGROUND -->
+<!-- Background -->
 <video id="bgVideo" class="bg" autoplay muted loop playsinline>
 <source src="Videosmain.mp4" type="video/mp4">
 </video>
@@ -194,7 +216,13 @@ border-radius:12px;
 <!-- STORY -->
 <div id="story">
 <div id="storyImage" class="story-img"></div>
-<div class="enter-btn" onclick="enterSite()">Tap here</div>
+
+<div class="story-controls">
+<div class="story-btn" onclick="prevStory()">◀</div>
+<div class="story-btn" onclick="nextStory()">▶</div>
+</div>
+
+<div class="enter-btn" onclick="enterSite()">Tap Here</div>
 </div>
 
 <!-- MAIN -->
@@ -214,9 +242,15 @@ border-radius:12px;
 <!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
+
+<div class="back-btn" onclick="closeModalManual()">← Back</div>
+
 <h2 id="modalTitle"></h2>
+
 <div class="song-grid" id="songs"></div>
+
 <div class="player" id="player"></div>
+
 <div class="signature">Deep</div>
 </div>
 </div>
@@ -225,95 +259,124 @@ border-radius:12px;
 
 /* HAPTIC */
 function vibrate(){
-if(navigator.vibrate) navigator.vibrate(15);
+if(navigator.vibrate){
+navigator.vibrate(15);
+}
 }
 
 /* STORY */
-const images=['image1.jpg','image2.jpg','image3.jpg'];
+const images=[
+'image1.jpg',
+'image2.jpg',
+'image3.jpg'
+];
+
 let current=0;
 const storyImg=document.getElementById('storyImage');
-storyImg.style.backgroundImage=`url(${images[current]})`;
+const enterBtn=document.querySelector('.enter-btn');
 
-storyImg.addEventListener('click',()=>{
-vibrate();
-current=(current+1)%images.length;
+function updateStory(){
 storyImg.style.backgroundImage=`url(${images[current]})`;
-});
+enterBtn.style.display = current === images.length-1 ? 'block' : 'none';
+}
+
+function nextStory(){
+if(current < images.length-1){
+current++;
+updateStory();
+vibrate();
+}
+}
+
+function prevStory(){
+if(current > 0){
+current--;
+updateStory();
+vibrate();
+}
+}
+
+updateStory();
 
 function enterSite(){
-vibrate();
-document.getElementById('story').style.opacity='0';
-setTimeout(()=>{
 document.getElementById('story').style.display='none';
 document.getElementById('main').style.display='flex';
-},800);
+vibrate();
 }
 
 /* SONG DATA */
 const songs={
 morning:[
-["Lover","0XwRlvv3KlOu4HWlOH34XG"],
-["Guess it's love","2gupOLBb6OGYAWai6nlmDv"],
-["Thinking of you","0rSU2KwpOCqLVDCPwd4WbE"],
-["With you","0xIuPDzJSnJywALez8dwKR"]
+["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
+["Guess it's Love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
+["Thinking of You","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
+["With You","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
 ],
 day:[
-["Kehkashan","2NTtfjk6ShR9uQcKJh1yX9"],
-["My Love","1tUYdjPkVHi9u0ecaFgnmD"],
-["Over and Over","7IU3w87VCx7qiar56GQ5OI"],
-["Falling Again","0K5LSPVXxIR30OlB3MHjN6"]
+["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
+["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
+["Over & Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
+["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
 ],
 dusk:[
-["Since Tum","5GnF4uvEcIibqcoYgzIlgS"],
-["Yaad","0CTLV9Fr5CEkvhqmBjvEIU"],
-["Mere Hisse De Phull","3zsrxaFaZFBrNY1EM69wMm"],
-["Ajj Kal Ve","7G7b3jsvPETNyccazdsubE"]
+["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
+["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
+["Mere Hisse De Phull","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
+["Ajj Kal Ve","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
 ],
 night:[
-["Priceless","3tOY2szKRlRHyTIETz4dSs"],
-["Departure Lane","7wGgYAOMhhRObOGdWlJ9Hi"],
-["Charmer","1F2sn8iJA607Xfz1K3d9dJ"],
-["Noor","7fRMmRAL9vN7eOCw1t03T3"]
+["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
+["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
+["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
+["Noor","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
 ]
 };
 
 function openSection(section,video){
-vibrate();
 
 const bg=document.getElementById('bgVideo');
-bg.querySelector('source').src=video;
+bg.pause();
+bg.innerHTML=`<source src="${video}" type="video/mp4">`;
 bg.load();
 bg.play();
 
 document.getElementById('modal').style.display='flex';
-document.getElementById('modalTitle').innerText=section.toUpperCase();
+document.getElementById('modalTitle').innerText=
+section.charAt(0).toUpperCase()+section.slice(1);
 
 const grid=document.getElementById('songs');
 grid.innerHTML='';
+
 songs[section].forEach(song=>{
 const div=document.createElement('div');
 div.className='song-card';
 div.innerText=song[0];
 div.onclick=()=>{
-vibrate();
 playSong(song[1]);
+vibrate();
 };
 grid.appendChild(div);
 });
 }
 
-function playSong(id){
+function playSong(link){
 const player=document.getElementById('player');
-player.innerHTML=`<iframe src="https://open.spotify.com/embed/track/${id}" allow="autoplay; clipboard-write; encrypted-media;"></iframe>`;
+player.innerHTML=`<iframe src="${link}" allow="autoplay; clipboard-write; encrypted-media;"></iframe>`;
 player.style.display='block';
 }
 
 function closeModal(e){
 if(e.target.id==='modal'){
+closeModalManual();
+}
+}
+
+function closeModalManual(){
 document.getElementById('modal').style.display='none';
 document.getElementById('player').style.display='none';
+vibrate();
 }
-}
+
 </script>
 
 </body>

@@ -15,153 +15,115 @@ box-sizing:border-box;
 font-family:'Dancing Script',cursive;
 }
 
-body{
+body,html{
+height:100%;
+width:100%;
+overflow:hidden;
 background:#000;
 color:white;
-overflow:hidden;
 }
 
-/* VIDEO BACKGROUND */
-video.bg{
+/* ===== BACKGROUND VIDEOS ===== */
+
+video{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
 object-fit:cover;
-z-index:-2;
-opacity:0;
-transition:opacity 1.2s ease;
-}
-
-video.active{
-opacity:1;
-}
-
-/* DARK OVERLAY */
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,.8));
-z-index:-1;
-}
-
-/* INTRO FOG */
-#intro{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.8);
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:40px;
-cursor:pointer;
-backdrop-filter:blur(10px);
+z-index:-3;
 transition:opacity 1.5s ease;
-z-index:10;
 }
 
-#intro h1{
-font-size:28px;
-line-height:1.5;
-}
+#video-main{opacity:1;}
+.section-video{opacity:0;}
 
-#intro p{
-margin-top:20px;
-font-size:18px;
-opacity:.7;
-}
+/* ===== OVERLAY INTRO ===== */
 
-#intro.hidden{
-opacity:0;
-pointer-events:none;
-}
-
-/* MAIN PAGE */
-#main{
-position:absolute;
-top:0;
-left:0;
+#overlay{
+position:fixed;
 width:100%;
 height:100%;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:30px;
-padding:40px;
-text-align:center;
-}
-
-#main h2{
-font-size:30px;
-}
-
-#main h3{
-font-size:18px;
-opacity:.7;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-width:100%;
-max-width:600px;
-margin-top:20px;
-}
-
-.card{
-height:120px;
-border-radius:20px;
-background:rgba(255,255,255,.08);
+background:rgba(0,0,0,0.6);
 backdrop-filter:blur(15px);
 display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+z-index:10;
+transition:opacity 1.5s ease;
+}
+
+#overlay h1{
+font-size:32px;
+margin-bottom:20px;
+}
+
+#overlay p{
+font-size:22px;
+opacity:0.9;
+}
+
+#overlay small{
+margin-top:20px;
+opacity:0.6;
+}
+
+/* ===== MAIN GRID ===== */
+
+#main{
+position:absolute;
+width:100%;
+height:100%;
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr 1fr;
+gap:10px;
+padding:20px;
+opacity:0;
+transition:opacity 1.5s ease;
+}
+
+.grid-box{
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(8px);
+display:flex;
 align-items:center;
 justify-content:center;
-font-size:20px;
+font-size:26px;
 cursor:pointer;
-transition:.3s;
+transition:0.4s ease;
+border-radius:15px;
 }
 
-.card:hover{
-transform:scale(1.05);
-background:rgba(255,255,255,.15);
+.grid-box:hover{
+background:rgba(255,255,255,0.1);
 }
 
-/* MODAL */
-.modal{
+/* ===== MODAL ===== */
+
+#modal{
 position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+top:10%;
+left:10%;
 width:80%;
-max-width:600px;
-background:rgba(0,0,0,.65);
-backdrop-filter:blur(25px);
-padding:40px;
-border-radius:30px;
+height:80%;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(20px);
+border-radius:20px;
+padding:30px;
 display:none;
 flex-direction:column;
-gap:25px;
 z-index:20;
+overflow:hidden;
+transition:opacity 1s ease;
 }
 
-.modal.active{
-display:flex;
-}
-
-.modal h4{
-font-size:24px;
+#modal h2{
 text-align:center;
+margin-bottom:20px;
 }
 
 .song-grid{
@@ -170,171 +132,195 @@ grid-template-columns:1fr 1fr;
 gap:15px;
 }
 
-.song{
-height:90px;
-border-radius:20px;
-background:rgba(255,255,255,.08);
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-transition:.3s;
+.song-card{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
 text-align:center;
-padding:10px;
+cursor:pointer;
+transition:0.3s ease;
 }
 
-.song:hover{
-background:rgba(255,255,255,.2);
+.song-card:hover{
+background:rgba(255,255,255,0.2);
 }
 
 .player{
-display:none;
 margin-top:20px;
+display:none;
+}
+
+iframe{
+width:100%;
+height:152px;
+border-radius:12px;
+}
+
+.back{
+position:absolute;
+top:15px;
+left:20px;
+cursor:pointer;
+font-size:20px;
 }
 
 .signature{
 position:absolute;
-bottom:20px;
-right:30px;
-font-size:22px;
-opacity:.8;
+bottom:15px;
+right:25px;
+font-size:24px;
+opacity:0.7;
 }
 
-/* CLICK OUTSIDE CLOSE */
-.backdrop{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:none;
-z-index:15;
+/* ===== FIRELIES ===== */
+
+.firefly{
+position:absolute;
+width:4px;
+height:4px;
+background:#ffd700;
+border-radius:50%;
+animation:fly 5s infinite ease-in-out;
 }
 
-.backdrop.active{
-display:block;
+@keyframes fly{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
 }
+
 </style>
 </head>
-
 <body>
 
-<!-- VIDEOS -->
-<video id="v-main" class="bg active" autoplay muted loop playsinline src="videosmain.mp4"></video>
-<video id="v-morning" class="bg" autoplay muted loop playsinline src="videosmorning.mp4"></video>
-<video id="v-day" class="bg" autoplay muted loop playsinline src="videosday.mp4"></video>
-<video id="v-dusk" class="bg" autoplay muted loop playsinline src="videosdusk.mp4"></video>
-<video id="v-night" class="bg" autoplay muted loop playsinline src="videosnight.mp4"></video>
+<!-- Background Videos -->
+<video id="video-main" autoplay muted loop playsinline>
+<source src="videosmain.mp4" type="video/mp4">
+</video>
 
-<div class="overlay"></div>
+<video id="video-morning" class="section-video" autoplay muted loop playsinline>
+<source src="videosmorning.mp4" type="video/mp4">
+</video>
 
-<!-- INTRO -->
-<div id="intro">
-<div>
+<video id="video-day" class="section-video" autoplay muted loop playsinline>
+<source src="videosday.mp4" type="video/mp4">
+</video>
+
+<video id="video-dusk" class="section-video" autoplay muted loop playsinline>
+<source src="videosdusk.mp4" type="video/mp4">
+</video>
+
+<video id="video-night" class="section-video" autoplay muted loop playsinline>
+<source src="videosnight.mp4" type="video/mp4">
+</video>
+
+<!-- Intro Overlay -->
+<div id="overlay">
 <h1>You matter to me more than you realize.</h1>
-<p>I’m not going anywhere.</p>
-</div>
+<p>Click anywhere to reveal</p>
+<small>Deep</small>
 </div>
 
-<!-- MAIN -->
+<!-- Main Grid -->
 <div id="main">
-<h2>You matter to me more than you realize.</h2>
-<h3>I’m not going anywhere.</h3>
-
-<div class="grid">
-<div class="card" onclick="openSection('morning')">Morning</div>
-<div class="card" onclick="openSection('day')">Day</div>
-<div class="card" onclick="openSection('dusk')">Dusk</div>
-<div class="card" onclick="openSection('night')">Night</div>
+<div class="grid-box" onclick="openSection('morning')">Morning</div>
+<div class="grid-box" onclick="openSection('day')">Day</div>
+<div class="grid-box" onclick="openSection('dusk')">Dusk</div>
+<div class="grid-box" onclick="openSection('night')">Night</div>
 </div>
 
-<div class="signature">Deep</div>
-</div>
+<!-- Modal -->
+<div id="modal">
+<div class="back" onclick="closeModal()">Back</div>
+<h2 id="sectionTitle"></h2>
 
-<!-- BACKDROP -->
-<div id="backdrop" class="backdrop" onclick="closeModal()"></div>
+<div class="song-grid" id="songs"></div>
 
-<!-- MODAL -->
-<div id="modal" class="modal">
-<h4 id="sectionTitle"></h4>
-<div id="songGrid" class="song-grid"></div>
-<div id="player" class="player"></div>
+<div class="player" id="player"></div>
+
 <div class="signature">Deep</div>
 </div>
 
 <script>
-const intro=document.getElementById('intro');
-intro.onclick=()=>intro.classList.add('hidden');
+const overlay=document.getElementById("overlay");
+const main=document.getElementById("main");
+const modal=document.getElementById("modal");
+const player=document.getElementById("player");
+const songsContainer=document.getElementById("songs");
 
-const videos={
-main:'v-main',
-morning:'v-morning',
-day:'v-day',
-dusk:'v-dusk',
-night:'v-night'
+overlay.onclick=()=>{
+overlay.style.opacity="0";
+setTimeout(()=>{
+overlay.style.display="none";
+main.style.opacity="1";
+},1500);
 };
 
 const sections={
 morning:[
-{name:'Lover',link:'https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG'},
-{name:'Guess It’s Love',link:'https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv'},
-{name:'With You',link:'https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR'},
-{name:'Thinking Of You',link:'https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE'}
+{name:"Lover",link:"https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"},
+{name:"Guess It's Love",link:"https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"},
+{name:"Thinking of You",link:"https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"},
+{name:"With You",link:"https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"}
 ],
 day:[
-{name:'Departure Lane',link:'https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi'},
-{name:'Since Tum',link:'https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS'},
-{name:'My Love',link:'https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD'},
-{name:'Over and Over',link:'https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI'}
+{name:"Departure Lane",link:"https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"},
+{name:"My Love",link:"https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"},
+{name:"Over and Over",link:"https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"},
+{name:"Falling Again",link:"https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"}
 ],
 dusk:[
-{name:'Falling Again',link:'https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6'},
-{name:'Mere Hisse De Phull',link:'https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm'},
-{name:'Priceless',link:'https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs'},
-{name:'Ajj Kal Ve',link:'https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE'}
+{name:"Since Tum",link:"https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"},
+{name:"Priceless",link:"https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"},
+{name:"Yaad",link:"https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"},
+{name:"Vass Chal Da",link:"https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"}
 ],
 night:[
-{name:'Yaad',link:'https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU'},
-{name:'Vass Chal Da',link:'https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax'},
-{name:'Kehkashan',link:'https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9'},
-{name:'Charmer',link:'https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ'}
+{name:"Kehkashan",link:"https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"},
+{name:"Charmer",link:"https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"},
+{name:"Ajj Kal Ve",link:"https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"},
+{name:"Mere Hisse De Phull",link:"https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"}
 ]
 };
 
-function switchVideo(key){
-Object.values(videos).forEach(id=>{
-document.getElementById(id).classList.remove('active');
-});
-document.getElementById(videos[key]).classList.add('active');
-}
+function openSection(type){
+modal.style.display="flex";
+document.getElementById("sectionTitle").innerText=type.charAt(0).toUpperCase()+type.slice(1);
+songsContainer.innerHTML="";
+player.style.display="none";
+player.innerHTML="";
 
-function openSection(name){
-switchVideo(name);
-document.getElementById('modal').classList.add('active');
-document.getElementById('backdrop').classList.add('active');
-document.getElementById('sectionTitle').innerText=name.charAt(0).toUpperCase()+name.slice(1);
+document.querySelectorAll(".section-video").forEach(v=>v.style.opacity="0");
+document.getElementById("video-main").style.opacity="0";
+document.getElementById("video-"+type).style.opacity="1";
 
-const grid=document.getElementById('songGrid');
-grid.innerHTML='';
-document.getElementById('player').style.display='none';
-
-sections[name].forEach(song=>{
-let div=document.createElement('div');
-div.className='song';
+sections[type].forEach(song=>{
+let div=document.createElement("div");
+div.className="song-card";
 div.innerText=song.name;
 div.onclick=()=>{
-document.getElementById('player').style.display='block';
-document.getElementById('player').innerHTML=
-`<iframe style="border-radius:12px" src="${song.link}" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+player.innerHTML=`<iframe src="${song.link}" allow="autoplay"></iframe>`;
+player.style.display="block";
 };
-grid.appendChild(div);
+songsContainer.appendChild(div);
 });
+
+if(type==="night"){
+for(let i=0;i<20;i++){
+let fire=document.createElement("div");
+fire.className="firefly";
+fire.style.top=Math.random()*100+"%";
+fire.style.left=Math.random()*100+"%";
+modal.appendChild(fire);
+}
+}
 }
 
 function closeModal(){
-document.getElementById('modal').classList.remove('active');
-document.getElementById('backdrop').classList.remove('active');
-switchVideo('main');
+modal.style.display="none";
+document.getElementById("video-main").style.opacity="1";
+document.querySelectorAll(".section-video").forEach(v=>v.style.opacity="0");
+modal.querySelectorAll(".firefly").forEach(f=>f.remove());
 }
 </script>
 

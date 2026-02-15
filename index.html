@@ -3,326 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Matter</title>
+<title>Safe With Me</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cormorant Garamond',serif;
+}
 
 body{
-    font-family:'Cormorant Garamond',serif;
-    height:100vh;
-    overflow:hidden;
-    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1a1a2e);
-    background-size:400% 400%;
-    animation:gradientFlow 20s ease infinite;
-    color:white;
+overflow:hidden;
+background:#000;
+color:#fff;
 }
 
-@keyframes gradientFlow{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+/* ================= BACKGROUND VIDEO ================= */
+
+#bgVideo{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+filter:blur(18px) brightness(0.6);
+z-index:-2;
+transition:1.2s ease;
 }
 
-/* ===== INTRO OVERLAY ===== */
-
-#intro{
-    position:fixed;
-    inset:0;
-    backdrop-filter:blur(15px);
-    background:rgba(0,0,0,0.6);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:30px;
-    z-index:999;
-    transition:1.2s ease;
+/* gradient glow overlay */
+body::after{
+content:'';
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center, rgba(255,200,120,0.15), rgba(0,0,0,0.7));
+z-index:-1;
+animation:glow 8s infinite alternate;
 }
 
-#intro h1{
-    font-weight:400;
-    font-size:1.8rem;
-    line-height:1.6;
-    letter-spacing:0.5px;
+@keyframes glow{
+0%{opacity:.7;}
+100%{opacity:1;}
 }
 
-#intro span{
-    font-family:'Dancing Script',cursive;
-    display:block;
-    margin-top:20px;
-    font-size:2rem;
-}
+/* ================= MAIN GRID ================= */
 
-/* ===== GRID ===== */
-
-#main{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:1fr 1fr;
-    height:100vh;
+.main{
+height:100vh;
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr 1fr;
+gap:15px;
+padding:20px;
 }
 
 .section{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    transition:0.4s ease;
-    overflow:hidden;
-}
-
-.section::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.4);
+position:relative;
+border-radius:20px;
+overflow:hidden;
+cursor:pointer;
+backdrop-filter:blur(4px);
+background:rgba(255,255,255,0.08);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:.4s ease;
 }
 
 .section:hover{
-    transform:scale(1.03);
+transform:scale(1.03);
+background:rgba(255,255,255,0.12);
 }
 
 .section h2{
-    position:relative;
-    z-index:2;
-    font-size:1.8rem;
-    font-weight:400;
+font-size:28px;
+letter-spacing:2px;
 }
 
-/* ===== MODAL ===== */
+/* ================= MODAL ================= */
+
+.modalOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(6px);
+opacity:0;
+visibility:hidden;
+transition:0.8s ease;
+}
+
+.modalOverlay.active{
+opacity:1;
+visibility:visible;
+}
 
 .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(6px);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:500;
+width:80%;
+max-width:500px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:30px 20px;
+position:relative;
+animation:dissolve .9s ease forwards;
 }
 
-.modal-content{
-    width:80%;
-    height:80%;
-    border-radius:20px;
-    overflow:hidden;
-    position:relative;
-    background:black;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+@keyframes dissolve{
+from{opacity:0; transform:scale(.9);}
+to{opacity:1; transform:scale(1);}
 }
 
-.modal video{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    z-index:0;
+.closeBtn{
+position:absolute;
+top:15px;
+left:20px;
+cursor:pointer;
+font-size:18px;
 }
 
-.modal-inner{
-    position:relative;
-    z-index:2;
-    width:90%;
-    text-align:center;
+.modal p{
+text-align:center;
+margin-bottom:20px;
+font-size:18px;
 }
 
-.modal-inner iframe{
-    width:100%;
-    margin:15px 0;
+.songGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.songCard{
+background:rgba(255,255,255,0.1);
+border-radius:15px;
+padding:10px;
+text-align:center;
+cursor:pointer;
+transition:.4s ease;
+}
+
+.songCard:hover{
+background:rgba(255,255,255,0.2);
+}
+
+.songCard iframe{
+width:100%;
+border-radius:12px;
+margin-top:10px;
+display:none;
+}
+
+.songCard.active iframe{
+display:block;
 }
 
 .signature{
-    position:absolute;
-    bottom:20px;
-    right:30px;
-    font-family:'Dancing Script',cursive;
-    font-size:1.6rem;
-    opacity:0.8;
+font-family:'Dancing Script',cursive;
+font-size:24px;
+text-align:right;
+margin-top:20px;
+opacity:.8;
 }
 
-/* ===== PARTICLES ===== */
-
-.firefly, .petal, .spark{
-    position:absolute;
-    border-radius:50%;
-    pointer-events:none;
-}
-
+/* Fireflies (night only) */
 .firefly{
-    width:6px;height:6px;
-    background:gold;
-    box-shadow:0 0 15px gold;
-    animation:float 6s infinite linear;
+position:absolute;
+width:6px;
+height:6px;
+background:gold;
+border-radius:50%;
+animation:fly 6s infinite ease-in-out;
+opacity:0.8;
 }
 
-@keyframes float{
-    0%{transform:translateY(0)}
-    100%{transform:translateY(-100vh)}
-}
-
-.spark{
-    width:4px;height:4px;
-    background:white;
-    box-shadow:0 0 10px white;
-    animation:float 5s infinite linear;
-}
-
-.petal{
-    width:10px;height:10px;
-    background:pink;
-    border-radius:50% 50% 50% 0;
-    animation:float 7s infinite linear;
+@keyframes fly{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-40px);}
+100%{transform:translateY(0px);}
 }
 
 </style>
 </head>
+
 <body>
 
-<!-- INTRO -->
-<div id="intro" onclick="start()">
-    <h1>
-        You matter to me more than you realize.
-        <span>Tap to enter</span>
-    </h1>
+<video autoplay muted loop id="bgVideo">
+<source src="videosmorning.mp4" type="video/mp4">
+</video>
+
+<div class="main">
+<div class="section" onclick="openSection('morning')"><h2>Morning</h2></div>
+<div class="section" onclick="openSection('day')"><h2>Day</h2></div>
+<div class="section" onclick="openSection('dusk')"><h2>Dusk</h2></div>
+<div class="section" onclick="openSection('night')"><h2>Night</h2></div>
 </div>
 
-<!-- MAIN GRID -->
-<div id="main">
+<div class="modalOverlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
 
-<div class="section" onclick="openModal('morning')">
-    <h2>Morning Light</h2>
+<div class="closeBtn" onclick="closeModal()">←</div>
+
+<p id="sectionText">You matter to me more than you realize.</p>
+
+<div class="songGrid" id="songGrid">
 </div>
 
-<div class="section" onclick="openModal('day')">
-    <h2>Daylight Truth</h2>
-</div>
-
-<div class="section" onclick="openModal('dusk')">
-    <h2>Golden Dusk</h2>
-</div>
-
-<div class="section" onclick="openModal('night')">
-    <h2>After Hours</h2>
-</div>
+<div class="signature">Deep</div>
 
 </div>
-
-<!-- MODAL -->
-<div class="modal" id="modal" onclick="closeModal(event)">
-    <div class="modal-content" id="modalContent">
-
-        <video id="modalVideo" autoplay muted loop></video>
-
-        <div class="modal-inner" id="songContainer"></div>
-
-        <div class="signature">Deep</div>
-
-    </div>
 </div>
 
 <script>
 
-/* INTRO */
-function start(){
-    document.getElementById('intro').style.opacity='0';
-    setTimeout(()=>document.getElementById('intro').remove(),1000);
-}
-
-/* SONG GROUPS (16 songs total) */
-
-const songs={
+const songs = {
 morning:[
 "https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG",
 "https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv",
 "https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE",
-"https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"
+"https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"
 ],
 day:[
 "https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi",
 "https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS",
 "https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs",
-"https://open.spotify.com/embed/track/16XBN3UaDs2v84EUMmHC1t"
+"https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"
 ],
 dusk:[
 "https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD",
-"https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI",
 "https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6",
-"https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"
+"https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9",
+"https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"
 ],
 night:[
-"https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU",
 "https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE",
-"https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax",
-"https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"
+"https://open.spotify.com/embed/track/16XBN3UaDs2v84EUMmHC1t",
+"https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ",
+"https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"
 ]
 };
 
-function openModal(type){
+function openSection(type){
 
-    document.getElementById('modal').style.display='flex';
+document.getElementById("modalOverlay").classList.add("active");
+document.getElementById("bgVideo").src="videos"+type+".mp4";
 
-    const video=document.getElementById('modalVideo');
-    video.src="videos"+type+".mp4";
+let grid=document.getElementById("songGrid");
+grid.innerHTML="";
 
-    const container=document.getElementById('songContainer');
-    container.innerHTML="";
+songs[type].forEach(link=>{
+let card=document.createElement("div");
+card.className="songCard";
+card.innerHTML="Tap to play<br><iframe src='"+link+"' height='80' frameborder='0' allow='autoplay; encrypted-media'></iframe>";
+card.onclick=function(){
+card.classList.toggle("active");
+}
+grid.appendChild(card);
+});
 
-    songs[type].forEach(link=>{
-        const iframe=document.createElement("iframe");
-        iframe.src=link;
-        iframe.height="80";
-        iframe.frameBorder="0";
-        iframe.allow="autoplay; clipboard-write; encrypted-media; fullscreen";
-        container.appendChild(iframe);
-    });
+if(type==="night"){
+for(let i=0;i<12;i++){
+let fly=document.createElement("div");
+fly.className="firefly";
+fly.style.top=Math.random()*100+"%";
+fly.style.left=Math.random()*100+"%";
+document.querySelector(".modal").appendChild(fly);
+}
+}
 
-    // particles
-    if(type==='night'){
-        for(let i=0;i<25;i++){
-            let f=document.createElement('div');
-            f.className='firefly';
-            f.style.left=Math.random()*100+'%';
-            f.style.top=Math.random()*100+'%';
-            document.getElementById('modalContent').appendChild(f);
-        }
-    }
-
-    if(type==='dusk'){
-        for(let i=0;i<20;i++){
-            let s=document.createElement('div');
-            s.className='spark';
-            s.style.left=Math.random()*100+'%';
-            s.style.top=Math.random()*100+'%';
-            document.getElementById('modalContent').appendChild(s);
-        }
-    }
-
-    if(type==='night'){
-        for(let i=0;i<15;i++){
-            let p=document.createElement('div');
-            p.className='petal';
-            p.style.left=Math.random()*100+'%';
-            p.style.top=Math.random()*100+'%';
-            document.getElementById('modalContent').appendChild(p);
-        }
-    }
 }
 
 function closeModal(e){
-    if(e.target.classList.contains('modal')){
-        document.getElementById('modal').style.display='none';
-        document.getElementById('modalVideo').src="";
-        document.querySelectorAll('.firefly,.spark,.petal').forEach(el=>el.remove());
-    }
+document.getElementById("modalOverlay").classList.remove("active");
+document.getElementById("bgVideo").src="videosmorning.mp4";
+document.querySelectorAll(".firefly").forEach(f=>f.remove());
 }
 
 </script>

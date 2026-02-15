@@ -16,44 +16,52 @@ body{
   color:white;
 }
 
-/* ================= VIDEO BACKGROUND ================= */
+/* ================= BACKGROUND VIDEOS ================= */
 
-video.bgVideo{
+video{
   position:fixed;
   top:0;left:0;
   width:100%;
   height:100%;
   object-fit:cover;
   z-index:-2;
-  transition:opacity 1.5s ease;
   opacity:0;
+  transition:opacity 2s ease;
 }
 
-video.activeVideo{
+video.active{
   opacity:1;
 }
 
-/* ================= OVERLAY ================= */
-
-#introOverlay{
+/* Soft cinematic gradient layer */
+.bgOverlay{
   position:fixed;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(15px);
+  background:linear-gradient(to bottom, rgba(0,0,0,.4), rgba(0,0,0,.7));
+  z-index:-1;
+}
+
+/* ================= INTRO ================= */
+
+#intro{
+  position:fixed;
+  width:100%;
+  height:100%;
+  backdrop-filter:blur(20px);
+  background:rgba(0,0,0,.6);
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:30px;
   cursor:pointer;
-  z-index:10;
   transition:opacity 1.5s ease;
+  z-index:10;
 }
 
-#introOverlay h1{
-  font-size:28px;
+#intro h1{
   font-weight:300;
+  font-size:26px;
 }
 
 /* ================= MAIN GRID ================= */
@@ -70,19 +78,19 @@ video.activeVideo{
   gap:25px;
 }
 
-.sectionCard{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-  padding:25px;
+.card{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
   border-radius:20px;
+  padding:25px;
   text-align:center;
   cursor:pointer;
-  transition:transform .4s ease, background .4s ease;
+  transition:.4s ease;
 }
 
-.sectionCard:hover{
+.card:hover{
   transform:scale(1.03);
-  background:rgba(255,255,255,0.15);
+  background:rgba(255,255,255,.15);
 }
 
 /* ================= MODAL ================= */
@@ -93,18 +101,18 @@ video.activeVideo{
   left:10%;
   width:80%;
   height:80%;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(25px);
-  border-radius:25px;
+  border-radius:30px;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(30px);
   padding:30px;
   display:none;
   flex-direction:column;
   justify-content:space-between;
-  z-index:20;
-  animation:fadeIn .8s ease;
+  animation:fade .8s ease;
+  overflow:hidden;
 }
 
-@keyframes fadeIn{
+@keyframes fade{
   from{opacity:0;transform:scale(.95)}
   to{opacity:1;transform:scale(1)}
 }
@@ -122,16 +130,15 @@ video.activeVideo{
 }
 
 .songCard{
-  background:rgba(255,255,255,0.1);
-  padding:25px;
+  background:rgba(255,255,255,.1);
   border-radius:15px;
-  text-align:center;
+  padding:25px;
   cursor:pointer;
   transition:.3s ease;
 }
 
 .songCard:hover{
-  background:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,.2);
 }
 
 .playerArea{
@@ -140,21 +147,16 @@ video.activeVideo{
   justify-content:center;
 }
 
-iframe{
-  border-radius:12px;
-}
-
-/* Signature */
-
 .signature{
   text-align:right;
   font-family:'Great Vibes',cursive;
-  font-size:28px;
+  font-size:26px;
   opacity:.8;
 }
 
-/* FIRELIES */
+/* ================= EFFECTS ================= */
 
+/* Fireflies */
 .firefly{
   position:absolute;
   width:6px;
@@ -162,35 +164,68 @@ iframe{
   background:gold;
   border-radius:50%;
   box-shadow:0 0 15px gold;
-  animation:float 5s infinite alternate;
+  animation:float 6s infinite alternate ease-in-out;
 }
 
 @keyframes float{
   from{transform:translateY(0)}
-  to{transform:translateY(-20px)}
+  to{transform:translateY(-30px)}
 }
+
+/* Golden drift */
+.particle{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:rgba(255,200,100,.7);
+  border-radius:50%;
+  animation:rise 6s infinite linear;
+}
+
+@keyframes rise{
+  from{transform:translateY(100px);opacity:0}
+  to{transform:translateY(-200px);opacity:1}
+}
+
+/* Morning shimmer */
+.shimmer{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,.15), transparent);
+  animation:shine 5s infinite;
+}
+
+@keyframes shine{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(100%)}
+}
+
 </style>
 </head>
 <body>
 
-<!-- VIDEOS -->
-<video id="morningVideo" class="bgVideo activeVideo" autoplay muted loop src="Videosmorning.mp4"></video>
-<video id="dayVideo" class="bgVideo" autoplay muted loop src="Videosday.mp4"></video>
-<video id="duskVideo" class="bgVideo" autoplay muted loop src="Videosdusk.mp4"></video>
-<video id="nightVideo" class="bgVideo" autoplay muted loop src="Videosnight.mp4"></video>
+<!-- Videos -->
+<video id="mainVideo" class="active" autoplay muted loop src="videosmain.mp4"></video>
+<video id="morningVideo" autoplay muted loop src="Videosmorning.mp4"></video>
+<video id="dayVideo" autoplay muted loop src="Videosday.mp4"></video>
+<video id="duskVideo" autoplay muted loop src="Videosdusk.mp4"></video>
+<video id="nightVideo" autoplay muted loop src="Videosnight.mp4"></video>
+
+<div class="bgOverlay"></div>
 
 <!-- INTRO -->
-<div id="introOverlay" onclick="enterSite()">
+<div id="intro" onclick="enter()">
   <h1>You matter to me more than you realize.</h1>
 </div>
 
 <!-- MAIN -->
 <div id="main">
   <div class="grid">
-    <div class="sectionCard" onclick="openSection('morning')">Morning</div>
-    <div class="sectionCard" onclick="openSection('day')">Day</div>
-    <div class="sectionCard" onclick="openSection('dusk')">Dusk</div>
-    <div class="sectionCard" onclick="openSection('night')">Night</div>
+    <div class="card" onclick="openSection('morning')">Morning</div>
+    <div class="card" onclick="openSection('day')">Day</div>
+    <div class="card" onclick="openSection('dusk')">Dusk</div>
+    <div class="card" onclick="openSection('night')">Night</div>
   </div>
 </div>
 
@@ -199,80 +234,114 @@ iframe{
   <div>
     <div class="modalHeader">You don’t have to go through this alone.</div>
     <div class="songGrid" id="songs"></div>
-    <div class="playerArea" id="playerArea"></div>
+    <div class="playerArea" id="player"></div>
   </div>
   <div class="signature">Deep</div>
 </div>
 
 <script>
 
-const songs = {
-morning:[
-["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["Guess It's Love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["Thinking Of You","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["With You","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
-],
-day:[
-["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
-["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
-["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
-["Vass Chal Da","https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"]
-],
-dusk:[
-["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
-["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
-["Over And Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
-["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
-],
-night:[
-["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
-["Ajj Kal Ve","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"],
-["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
-["Guess It's Love (Reprise)","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"]
-]
-};
-
-function enterSite(){
-document.getElementById("introOverlay").style.opacity=0;
+function enter(){
+document.getElementById("intro").style.opacity=0;
 setTimeout(()=>{
-document.getElementById("introOverlay").style.display="none";
+document.getElementById("intro").style.display="none";
 document.getElementById("main").style.display="block";
 },1200);
 }
 
-function switchVideo(section){
-document.querySelectorAll(".bgVideo").forEach(v=>v.classList.remove("activeVideo"));
-document.getElementById(section+"Video").classList.add("activeVideo");
+function switchVideo(id){
+document.querySelectorAll("video").forEach(v=>v.classList.remove("active"));
+document.getElementById(id+"Video").classList.add("active");
 }
 
 function openSection(section){
 switchVideo(section);
 let modal=document.getElementById("modal");
+modal.style.display="flex";
+
+applyEffects(section);
+loadSongs(section);
+}
+
+function closeModal(e){
+if(e.target.id==="modal"){
+document.getElementById("modal").style.display="none";
+document.getElementById("player").innerHTML="";
+}
+}
+
+function loadSongs(section){
+const songs={
+morning:[
+["Lover","0XwRlvv3KlOu4HWlOH34XG"],
+["Guess It's Love","2gupOLBb6OGYAWai6nlmDv"],
+["Thinking Of You","0rSU2KwpOCqLVDCPwd4WbE"],
+["With You","0xIuPDzJSnJywALez8dwKR"]
+],
+day:[
+["Priceless","3tOY2szKRlRHyTIETz4dSs"],
+["Since Tum","5GnF4uvEcIibqcoYgzIlgS"],
+["Yaad","0CTLV9Fr5CEkvhqmBjvEIU"],
+["Vass Chal Da","4s71PFrRkQGLvISXotXyax"]
+],
+dusk:[
+["Kehkashan","2NTtfjk6ShR9uQcKJh1yX9"],
+["My Love","1tUYdjPkVHi9u0ecaFgnmD"],
+["Over And Over","7IU3w87VCx7qiar56GQ5OI"],
+["Falling Again","0K5LSPVXxIR30OlB3MHjN6"]
+],
+night:[
+["Departure Lane","7wGgYAOMhhRObOGdWlJ9Hi"],
+["Ajj Kal Ve","7G7b3jsvPETNyccazdsubE"],
+["Charmer","1F2sn8iJA607Xfz1K3d9dJ"],
+["Guess It's Love","2gupOLBb6OGYAWai6nlmDv"]
+]
+};
+
 let grid=document.getElementById("songs");
-let player=document.getElementById("playerArea");
-player.innerHTML="";
-player.style.display="none";
 grid.innerHTML="";
+document.getElementById("player").innerHTML="";
+document.getElementById("player").style.display="none";
 
 songs[section].forEach(song=>{
 let div=document.createElement("div");
 div.className="songCard";
 div.innerText=song[0];
 div.onclick=()=>{
-player.innerHTML=`<iframe src="${song[1]}" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media"></iframe>`;
-player.style.display="flex";
+document.getElementById("player").innerHTML=
+`<iframe src="https://open.spotify.com/embed/track/${song[1]}" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media"></iframe>`;
+document.getElementById("player").style.display="flex";
 };
 grid.appendChild(div);
 });
-
-modal.style.display="flex";
 }
 
-function closeModal(e){
-if(e.target.id==="modal"){
-document.getElementById("modal").style.display="none";
-document.getElementById("playerArea").innerHTML="";
+function applyEffects(section){
+let modal=document.getElementById("modal");
+modal.querySelectorAll(".firefly,.particle,.shimmer").forEach(e=>e.remove());
+
+if(section==="night"){
+for(let i=0;i<10;i++){
+let f=document.createElement("div");
+f.className="firefly";
+f.style.left=Math.random()*100+"%";
+f.style.top=Math.random()*100+"%";
+modal.appendChild(f);
+}
+}
+if(section==="dusk"){
+for(let i=0;i<15;i++){
+let p=document.createElement("div");
+p.className="particle";
+p.style.left=Math.random()*100+"%";
+p.style.bottom="0";
+modal.appendChild(p);
+}
+}
+if(section==="morning"){
+let s=document.createElement("div");
+s.className="shimmer";
+modal.appendChild(s);
 }
 }
 

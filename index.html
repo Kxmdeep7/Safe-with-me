@@ -2,52 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe With Me</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{
+body,html{
 height:100%;
 font-family:'Caveat',cursive;
-background:#0d0d12;
-color:white;
 overflow:hidden;
+color:white;
 }
 
-/* ===== Animated Cinematic Background ===== */
-body::before{
-content:'';
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 30%, rgba(255,180,120,0.2), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(120,160,255,0.2), transparent 40%),
-linear-gradient(120deg,#141421,#1d1d2e,#101018);
-background-size:200% 200%;
-animation:moveBg 18s ease infinite;
-z-index:-2;
+/* Animated cinematic background */
+body{
+background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c2b);
+background-size:400% 400%;
+animation:gradient 18s ease infinite;
 }
 
-@keyframes moveBg{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+@keyframes gradient{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
 }
 
-/* Glow overlay */
-body::after{
-content:'';
-position:fixed;
-inset:0;
-background:radial-gradient(circle at center, rgba(255,220,180,0.15), transparent 70%);
-pointer-events:none;
-z-index:-1;
-}
-
-/* ===== STORY INTRO ===== */
+/* STORY INTRO */
 #story{
 position:fixed;
 inset:0;
@@ -56,66 +38,75 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:10;
+z-index:20;
+transition:opacity .6s ease;
 }
 
 .story-img{
 width:90%;
 max-width:380px;
-height:65vh;
+height:70vh;
 background-size:cover;
 background-position:center;
-border-radius:20px;
-box-shadow:0 0 40px rgba(255,255,255,0.2);
-transition:opacity .4s ease;
+border-radius:22px;
+box-shadow:0 0 30px rgba(255,255,255,0.15);
+}
+
+.story-controls{
+margin-top:20px;
+display:flex;
+gap:25px;
+}
+
+.story-btn{
+font-size:28px;
+cursor:pointer;
 }
 
 .enter-btn{
 margin-top:25px;
-padding:10px 25px;
-border-radius:30px;
-border:1px solid rgba(255,255,255,0.4);
-background:rgba(255,255,255,0.1);
-display:none;
+font-size:22px;
 cursor:pointer;
+opacity:.8;
 }
 
-/* ===== MAIN PAGE ===== */
+/* MAIN */
 #main{
 display:none;
 height:100%;
+display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:30px;
+padding:20px;
 text-align:center;
-animation:fadeIn 1.2s ease forwards;
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
 }
 
 .main-title{
-font-size:28px;
+font-size:26px;
 margin-bottom:40px;
-text-shadow:0 0 20px rgba(255,255,255,0.4);
+opacity:.9;
 }
 
-.section{
-width:90%;
-max-width:420px;
-padding:18px;
-margin:10px 0;
-border-radius:18px;
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+width:100%;
+max-width:400px;
+}
+
+.section-card{
+padding:35px 15px;
 background:rgba(255,255,255,0.08);
-backdrop-filter:blur(6px);
+border-radius:20px;
+backdrop-filter:blur(10px);
 cursor:pointer;
 transition:.3s;
+font-size:20px;
 }
 
-.section:hover{
+.section-card:hover{
 background:rgba(255,255,255,0.15);
 }
 
@@ -123,19 +114,24 @@ background:rgba(255,255,255,0.15);
 position:fixed;
 bottom:15px;
 right:20px;
-font-size:22px;
+font-size:24px;
 opacity:.8;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
 position:fixed;
 inset:0;
 display:none;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.5);
-animation:fadeIn .6s ease forwards;
+background:rgba(0,0,0,0.65);
+animation:fade .3s ease;
+}
+
+@keyframes fade{
+from{opacity:0}
+to{opacity:1}
 }
 
 .modal-content{
@@ -143,27 +139,13 @@ width:90%;
 height:85%;
 background:rgba(0,0,0,0.55);
 backdrop-filter:blur(8px);
-border-radius:20px;
+border-radius:22px;
 padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
 overflow:hidden;
 position:relative;
-}
-
-.back-btn{
-position:absolute;
-top:15px;
-left:20px;
-cursor:pointer;
-font-size:18px;
-opacity:.7;
-}
-
-.modal h2{
-margin-top:30px;
-margin-bottom:20px;
 }
 
 .song-grid{
@@ -175,19 +157,15 @@ width:100%;
 
 .song-card{
 aspect-ratio:1/1;
-border-radius:15px;
 background:rgba(255,255,255,0.12);
+border-radius:18px;
 display:flex;
-align-items:center;
 justify-content:center;
-text-align:center;
+align-items:center;
 padding:12px;
+text-align:center;
 cursor:pointer;
-transition:.3s;
-}
-
-.song-card:hover{
-background:rgba(255,255,255,0.2);
+font-size:18px;
 }
 
 .player{
@@ -199,27 +177,50 @@ display:none;
 .player iframe{
 width:100%;
 height:80px;
-border:none;
 border-radius:12px;
+border:none;
+}
+
+/* Night fireflies */
+.firefly{
+position:absolute;
+width:3px;
+height:3px;
+background:rgba(255,255,180,0.8);
+border-radius:50%;
+animation:float 8s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0px);opacity:0}
+50%{opacity:1}
+100%{transform:translateY(-300px);opacity:0}
 }
 </style>
 </head>
+
 <body>
 
 <!-- STORY -->
 <div id="story">
 <div id="storyImage" class="story-img"></div>
-<div id="enterBtn" class="enter-btn" onclick="enterSite()">Tap to enter</div>
+<div class="story-controls">
+<div class="story-btn" onclick="prevStory()">◀</div>
+<div class="story-btn" onclick="nextStory()">▶</div>
+</div>
+<div class="enter-btn" id="enterBtn" onclick="enterSite()" style="display:none;">Tap to enter</div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
 <div class="main-title">You matter to me more than you realize.</div>
 
-<div class="section" onclick="openSection('morning')">🌅 Morning Light</div>
-<div class="section" onclick="openSection('day')">☀️ Day Calm</div>
-<div class="section" onclick="openSection('dusk')">🌇 Golden Dusk</div>
-<div class="section" onclick="openSection('night')">🌙 Midnight Glow</div>
+<div class="grid">
+<div class="section-card" onclick="openSection('morning')">🌅 Morning Light</div>
+<div class="section-card" onclick="openSection('day')">☀ Day Calm</div>
+<div class="section-card" onclick="openSection('dusk')">🌇 Golden Dusk</div>
+<div class="section-card" onclick="openSection('night')">🌙 Midnight Glow</div>
+</div>
 
 <div class="signature">Deep</div>
 </div>
@@ -227,8 +228,6 @@ border-radius:12px;
 <!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
-<div class="back-btn" onclick="closeModal()">← Back</div>
-<h2 id="modalTitle"></h2>
 <div class="song-grid" id="songs"></div>
 <div class="player" id="player"></div>
 <div class="signature">Deep</div>
@@ -238,64 +237,69 @@ border-radius:12px;
 <script>
 
 /* STORY IMAGES */
-const images=["1.jpg","2.jpg","3.jpg"];
+const images=['1.jpg','2.jpg','3.jpg'];
 let current=0;
 const storyImg=document.getElementById('storyImage');
 const enterBtn=document.getElementById('enterBtn');
 
-function updateStory(){
 storyImg.style.backgroundImage=`url(${images[current]})`;
-enterBtn.style.display=(current===images.length-1)?"block":"none";
-}
-updateStory();
 
-storyImg.addEventListener("click",()=>{
+function nextStory(){
 if(current<images.length-1){
 current++;
-updateStory();
+storyImg.style.backgroundImage=`url(${images[current]})`;
 }
-});
+if(current===images.length-1){
+enterBtn.style.display='block';
+}
+}
+function prevStory(){
+if(current>0){
+current--;
+storyImg.style.backgroundImage=`url(${images[current]})`;
+enterBtn.style.display='none';
+}
+}
 
-/* ENTER SITE */
 function enterSite(){
 document.getElementById('story').style.display='none';
 document.getElementById('main').style.display='flex';
 }
 
-/* SONG DATA */
+/* SONG HINTS */
 const songs={
 morning:[
-["where comfort feels natural","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["that feeling you don’t question","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["you cross my mind quietly","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["peace sits here","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
+["soft sunrise feeling","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
+["the kind of love that stays","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
+["you on my mind again","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
+["closer than words","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
 ],
 day:[
-["a universe in someone’s eyes","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
-["simple. steady. real.","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
-["still choosing the same heart","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
-["like the first time… again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
+["steady and warm","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
+["real and grounded","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
+["over and over again","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
+["falling softly","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
 ],
 dusk:[
-["everything shifted softly","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
-["some memories stay warm","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
-["what was meant for me","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
-["learning love differently","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
+["between light and shadow","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
+["a memory that lingers","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
+["flowers meant for you","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
+["quiet longing","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
 ],
 night:[
-["some things aren’t replaceable","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
-["roads we didn’t take","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
-["dangerously magnetic","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
-["light in the darkest room","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
+["unspoken value","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
+["the lane we walked","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
+["a little charm","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
+["light in darkness","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
 ]
 };
 
 function openSection(section){
 document.getElementById('modal').style.display='flex';
-document.getElementById('modalTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
 
 const grid=document.getElementById('songs');
 grid.innerHTML='';
+
 songs[section].forEach(song=>{
 const div=document.createElement('div');
 div.className='song-card';
@@ -303,6 +307,17 @@ div.innerText=song[0];
 div.onclick=()=>playSong(song[1]);
 grid.appendChild(div);
 });
+
+/* Night fireflies */
+if(section==='night'){
+for(let i=0;i<15;i++){
+let f=document.createElement('div');
+f.className='firefly';
+f.style.left=Math.random()*90+'%';
+f.style.top=Math.random()*80+'%';
+document.querySelector('.modal-content').appendChild(f);
+}
+}
 }
 
 function playSong(link){
@@ -312,12 +327,12 @@ player.style.display='block';
 }
 
 function closeModal(e){
-if(!e || e.target.id==='modal'){
+if(e.target.id==='modal'){
 document.getElementById('modal').style.display='none';
 document.getElementById('player').style.display='none';
+document.querySelectorAll('.firefly').forEach(f=>f.remove());
 }
 }
-
 </script>
 
 </body>

@@ -3,251 +3,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carried Quietly</title>
+<title>Quietly</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-body{
-    font-family:'Inter',sans-serif;
-    overflow:hidden;
-    background:#f5efe6;
-    color:#1c1c1c;
-    transition:background 6s ease-in-out,color 4s ease;
+body {
+    background:#0f0f12;
+    font-family:'Playfair Display', serif;
+    color:white;
+    overflow-x:hidden;
 }
 
-/* SECTIONS */
-
-.section{
-    position:absolute;
-    width:100%;
-    height:100vh;
+/* INTRO POPUP */
+#intro {
+    position:fixed;
+    inset:0;
+    background:black;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
     text-align:center;
     padding:40px;
-    opacity:0;
-    transition:opacity 3s ease;
+    z-index:1000;
+    cursor:pointer;
 }
 
-.active{
-    opacity:1;
-}
-
-/* TYPOGRAPHY */
-
-h1,h2{
-    font-family:'Playfair Display',serif;
-    margin-bottom:20px;
-}
-
-h1{font-size:2.2rem;}
-h2{font-size:1.8rem;}
-
-p{
-    max-width:600px;
-    line-height:1.6;
-    font-size:1.1rem;
-    opacity:0.85;
-}
-
-/* SONG EMBEDS */
-
-.song-grid{
-    margin-top:30px;
-    display:grid;
-    gap:20px;
-    width:100%;
-    max-width:650px;
-}
-
-iframe{
-    border-radius:12px;
-}
-
-/* BREATHING GLOW */
-
-.glow{
-    position:fixed;
-    width:600px;
-    height:600px;
-    border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,0.25),transparent 70%);
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    animation:breathe 12s ease-in-out infinite;
-    pointer-events:none;
-    z-index:-1;
-}
-
-@keyframes breathe{
-    0%,100%{transform:translate(-50%,-50%) scale(1);}
-    50%{transform:translate(-50%,-50%) scale(1.2);}
-}
-
-/* DUST PARTICLES */
-
-.particle{
-    position:fixed;
-    width:3px;
-    height:3px;
-    background:rgba(255,255,255,0.2);
-    border-radius:50%;
-    animation:float 25s linear infinite;
-    pointer-events:none;
-}
-
-@keyframes float{
-    from{transform:translateY(100vh);}
-    to{transform:translateY(-10vh);}
-}
-
-/* STARS */
-
-.star{
-    position:absolute;
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background:#ffffff;
-    box-shadow:0 0 20px #ffffff;
-    top:50%;
-    opacity:0;
-    transition:all 4s ease;
-}
-
-#star-left{left:0;}
-#star-right{right:0;}
-
-.align-left{left:45%!important;opacity:1!important;}
-.align-right{right:45%!important;opacity:1!important;}
-
-.final-text{
-    margin-top:120px;
-    font-family:'Playfair Display',serif;
+#intro p {
     font-size:1.4rem;
-    opacity:0;
-    transition:opacity 3s ease;
+    line-height:1.8;
+    opacity:0.9;
 }
 
-.reveal{opacity:1!important;}
+/* HUB */
+#hub {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+    transition:filter 0.6s ease, transform 0.6s ease;
+}
 
-.signature{
-    margin-top:20px;
-    font-size:0.9rem;
-    opacity:0.5;
+#hub.blur {
+    filter:blur(8px);
+    transform:scale(1.02);
+}
+
+.card {
+    width:280px;
+    padding:20px;
+    border:1px solid rgba(255,255,255,0.2);
+    text-align:center;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.card:hover {
+    background:rgba(255,255,255,0.05);
+}
+
+/* MODAL */
+.modal {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+    z-index:500;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.6s ease;
+}
+
+.modal.active {
+    opacity:1;
+    pointer-events:auto;
+}
+
+.modal-content {
+    width:80%;
+    max-width:900px;
+    height:80%;
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+    transform:translateY(20px);
+    transition:transform 0.6s ease;
+}
+
+.modal.active .modal-content {
+    transform:translateY(0px);
+}
+
+.modal video {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    opacity:0;
+}
+
+.modal.active video {
+    animation:videoFade 1.2s ease forwards;
+    animation-delay:0.5s;
+}
+
+@keyframes videoFade {
+    from { opacity:0; }
+    to { opacity:0.4; }
+}
+
+/* Closing animation */
+.modal.closing video {
+    opacity:0;
+    transition:opacity 0.8s ease;
+}
+
+.modal.closing {
+    opacity:0;
+    transition:opacity 0.6s ease 0.4s;
+}
+
+.close {
+    position:absolute;
+    top:15px;
+    left:20px;
+    font-size:14px;
+    cursor:pointer;
+    opacity:0.8;
+}
+
+.section-text {
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.signature {
+    position:absolute;
+    bottom:20px;
+    right:30px;
+    font-family:'Dancing Script', cursive;
+    font-size:28px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="glow"></div>
+<!-- INTRO -->
+<div id="intro" onclick="closeIntro()">
+    <p>
+        You matter to me more than you realize.<br><br>
+        This isn’t loud.<br>
+        It’s just something I made… quietly.
+    </p>
+</div>
 
-<script>
-for(let i=0;i<30;i++){
-    let dot=document.createElement("div");
-    dot.className="particle";
-    dot.style.left=Math.random()*100+"vw";
-    dot.style.animationDuration=(20+Math.random()*20)+"s";
-    document.body.appendChild(dot);
-}
-</script>
+<!-- HUB -->
+<div id="hub">
+
+    <div class="card" onclick="openModal('m1')">
+        Morning Light<br>
+        <small>Some feelings belong to sunrise.</small>
+    </div>
+
+    <div class="card" onclick="openModal('m2')">
+        Between The Silence<br>
+        <small>Even quiet things stay.</small>
+    </div>
+
+    <div class="card" onclick="openModal('m3')">
+        If You Ever Wonder<br>
+        <small>There’s an answer.</small>
+    </div>
+
+    <div class="card" onclick="openModal('m4')">
+        Still Here<br>
+        <small>Not loud. Just present.</small>
+    </div>
+
+</div>
 
 <!-- SECTION 1 -->
-<section class="section active" id="s1">
-<h1>This isn’t loud.</h1>
-<p>
-It isn’t dramatic.<br><br>
-It’s just honest.<br><br>
-Some feelings don’t ask for attention.<br>
-They simply stay.
-</p>
-</section>
+<div class="modal" id="m1" onclick="closeModal(event,'m1')">
+<div class="modal-content">
+
+<video autoplay muted loop>
+<source src="video1.mp4" type="video/mp4">
+</video>
+
+<div class="close" onclick="forceClose('m1')">Back</div>
+
+<div class="section-text">
+<p>Some mornings don’t need explanations.<br>Just the right song.</p>
+</div>
+
+<iframe style="border-radius:12px"
+src="SPOTIFY_LINK_1"
+width="300" height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+<div class="signature">Deep</div>
+</div>
+</div>
 
 <!-- SECTION 2 -->
-<section class="section" id="s2">
-<h2>For the mornings that feel heavy.</h2>
-<p>These are the songs I’d hand you quietly.</p>
-<div class="song-grid">
-<iframe src="https://open.spotify.com/embed/track/3mZLiEDAHIjZ8ms5Lxq33F" height="80"></iframe>
-<iframe src="https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi" height="80"></iframe>
-<iframe src="https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG" height="80"></iframe>
+<div class="modal" id="m2" onclick="closeModal(event,'m2')">
+<div class="modal-content">
+
+<video autoplay muted loop>
+<source src="video2.mp4" type="video/mp4">
+</video>
+
+<div class="close" onclick="forceClose('m2')">Back</div>
+
+<div class="section-text">
+<p>Even in silence,<br>some feelings stay.</p>
 </div>
-</section>
+
+<iframe style="border-radius:12px"
+src="SPOTIFY_LINK_2"
+width="300" height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+<div class="signature">Deep</div>
+</div>
+</div>
 
 <!-- SECTION 3 -->
-<section class="section" id="s3">
-<h2>Some days feel uncertain.</h2>
-<p>
-But emptiness doesn’t mean you are lost.<br>
-It only means your heart feels deeply.
-</p>
-<div class="song-grid">
-<iframe src="https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9" height="80"></iframe>
-<iframe src="https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD" height="80"></iframe>
-<iframe src="https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI" height="80"></iframe>
+<div class="modal" id="m3" onclick="closeModal(event,'m3')">
+<div class="modal-content">
+
+<video autoplay muted loop>
+<source src="video3.mp4" type="video/mp4">
+</video>
+
+<div class="close" onclick="forceClose('m3')">Back</div>
+
+<div class="section-text">
+<p>If you ever wonder…<br>I’m still here.</p>
 </div>
-</section>
+
+<iframe style="border-radius:12px"
+src="SPOTIFY_LINK_3"
+width="300" height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+<div class="signature">Deep</div>
+</div>
+</div>
 
 <!-- SECTION 4 -->
-<section class="section" id="s4">
-<h2>I’m not here to compete.</h2>
-<p>
-I’m just here.<br><br>
-Steady.<br>
-Without pressure.
-</p>
+<div class="modal" id="m4" onclick="closeModal(event,'m4')">
+<div class="modal-content">
 
-<div class="star" id="star-left"></div>
-<div class="star" id="star-right"></div>
+<video autoplay muted loop>
+<source src="video4.mp4" type="video/mp4">
+</video>
 
-<div class="final-text" id="final-text">
-Some things are carried quietly.<br><br>
-And some people stay — even in silence.
-<div class="signature">You are safe here.</div>
+<div class="close" onclick="forceClose('m4')">Back</div>
+
+<div class="section-text">
+<p>Not rushing.<br>Not forcing.<br>Just present.</p>
 </div>
-</section>
+
+<iframe style="border-radius:12px"
+src="SPOTIFY_LINK_4"
+width="300" height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+<div class="signature">Deep</div>
+</div>
+</div>
 
 <script>
-let current=1;
-const total=4;
-
-function nextSection(){
-    if(current<total){
-        document.getElementById("s"+current).classList.remove("active");
-        current++;
-        document.getElementById("s"+current).classList.add("active");
-
-        if(current===2){
-            document.body.style.background="#f4d1bd";
-        }
-        if(current===3){
-            document.body.style.background="#e3b9a6";
-        }
-        if(current===4){
-            document.body.style.background="#0f172a";
-            document.body.style.color="#f5f5f5";
-
-            setTimeout(()=>{
-                document.getElementById("star-left").classList.add("align-left");
-                setTimeout(()=>{
-                    document.getElementById("star-right").classList.add("align-right");
-                },1000);
-                setTimeout(()=>{
-                    document.getElementById("final-text").classList.add("reveal");
-                },3000);
-            },1500);
-        }
-    }
+function closeIntro(){
+    document.getElementById("intro").style.display="none";
 }
 
-setInterval(nextSection,9000);
+function openModal(id){
+    const modal = document.getElementById(id);
+    const hub = document.getElementById("hub");
+    hub.classList.add("blur");
+    modal.classList.add("active");
+}
+
+function forceClose(id){
+    const modal = document.getElementById(id);
+    const hub = document.getElementById("hub");
+
+    modal.classList.add("closing");
+
+    setTimeout(() => {
+        modal.classList.remove("active","closing");
+        hub.classList.remove("blur");
+    },900);
+}
+
+function closeModal(event,id){
+    if(event.target.id === id){
+        forceClose(id);
+    }
+}
 </script>
 
 </body>

@@ -3,82 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quietly</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<title>For Deep</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap');
+
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
+    font-family:'Poppins',sans-serif;
     background:#0f0f12;
-    font-family:'Playfair Display', serif;
-    color:white;
+    color:#fff;
     overflow-x:hidden;
 }
 
-/* INTRO POPUP */
+/* ===== POPUP ===== */
 #intro {
     position:fixed;
     inset:0;
-    background:black;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(8px);
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     text-align:center;
     padding:40px;
     z-index:1000;
-    cursor:pointer;
+    opacity:1;
+    transition:opacity 1s ease;
 }
 
-#intro p {
-    font-size:1.4rem;
-    line-height:1.8;
-    opacity:0.9;
+#intro.hidden {
+    opacity:0;
+    pointer-events:none;
 }
 
-/* HUB */
-#hub {
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:40px;
-    transition:filter 0.6s ease, transform 0.6s ease;
+#intro-box {
+    max-width:500px;
+    font-size:1.2rem;
+    line-height:1.6;
 }
 
-#hub.blur {
-    filter:blur(8px);
-    transform:scale(1.02);
+/* ===== MAIN PAGE ===== */
+
+.container {
+    padding:60px 20px;
+    max-width:900px;
+    margin:auto;
+}
+
+.section-grid {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:25px;
 }
 
 .card {
-    width:280px;
-    padding:20px;
-    border:1px solid rgba(255,255,255,0.2);
-    text-align:center;
+    padding:25px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(6px);
     cursor:pointer;
-    transition:0.4s;
+    transition:all .4s ease;
 }
 
 .card:hover {
-    background:rgba(255,255,255,0.05);
+    background:rgba(255,255,255,0.1);
+    transform:translateY(-4px);
 }
 
-/* MODAL */
+.card h2 {
+    font-family:'Playfair Display',serif;
+    font-weight:500;
+    margin-bottom:8px;
+}
+
+/* ===== MODAL ===== */
+
 .modal {
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.85);
+    background:rgba(0,0,0,0.8);
     display:flex;
-    justify-content:center;
     align-items:center;
-    padding:40px;
-    z-index:500;
+    justify-content:center;
+    padding:20px;
     opacity:0;
     pointer-events:none;
-    transition:opacity 0.6s ease;
+    transition:opacity .6s ease;
 }
 
 .modal.active {
@@ -88,240 +100,183 @@ body {
 
 .modal-content {
     width:80%;
-    max-width:900px;
-    height:80%;
+    max-width:700px;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(12px);
+    border-radius:18px;
+    padding:30px;
     position:relative;
-    border-radius:20px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:40px;
-    transform:translateY(20px);
-    transition:transform 0.6s ease;
+    animation:fadeIn .8s ease;
 }
 
-.modal.active .modal-content {
-    transform:translateY(0px);
+@keyframes fadeIn {
+    from { transform:translateY(20px); opacity:0; }
+    to { transform:translateY(0); opacity:1; }
 }
 
-.modal video {
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    z-index:-1;
-    opacity:0;
-}
-
-.modal.active video {
-    animation:videoFade 1.2s ease forwards;
-    animation-delay:0.5s;
-}
-
-@keyframes videoFade {
-    from { opacity:0; }
-    to { opacity:0.4; }
-}
-
-/* Closing animation */
-.modal.closing video {
-    opacity:0;
-    transition:opacity 0.8s ease;
-}
-
-.modal.closing {
-    opacity:0;
-    transition:opacity 0.6s ease 0.4s;
-}
-
-.close {
+.close-btn {
     position:absolute;
     top:15px;
     left:20px;
-    font-size:14px;
     cursor:pointer;
-    opacity:0.8;
+    font-size:0.9rem;
+    opacity:.6;
 }
 
-.section-text {
-    text-align:center;
-    margin-bottom:30px;
+.close-btn:hover { opacity:1; }
+
+.modal h2 {
+    font-family:'Playfair Display',serif;
+    font-weight:500;
+    margin-bottom:15px;
+}
+
+.modal p {
+    margin-bottom:20px;
+    line-height:1.6;
+    opacity:.85;
+}
+
+iframe {
+    border-radius:12px;
+    margin-top:10px;
 }
 
 .signature {
-    position:absolute;
-    bottom:20px;
-    right:30px;
-    font-family:'Dancing Script', cursive;
-    font-size:28px;
+    margin-top:25px;
+    font-family:'Playfair Display',serif;
+    font-size:1.4rem;
+    text-align:right;
+    opacity:.7;
 }
+
 </style>
 </head>
-
 <body>
 
-<!-- INTRO -->
+<!-- INTRO POPUP -->
 <div id="intro" onclick="closeIntro()">
-    <p>
-        You matter to me more than you realize.<br><br>
-        This isn’t loud.<br>
-        It’s just something I made… quietly.
-    </p>
+    <div id="intro-box">
+        <p>You matter to me more than you realize.</p>
+        <br>
+        <p>This isn’t loud.<br>It’s just honest.</p>
+        <br>
+        <p style="opacity:.6;">Tap anywhere.</p>
+    </div>
 </div>
 
-<!-- HUB -->
-<div id="hub">
+<div class="container">
 
-    <div class="card" onclick="openModal('m1')">
-        Morning Light<br>
-        <small>Some feelings belong to sunrise.</small>
+    <div class="section-grid">
+
+        <div class="card" onclick="openModal('morning')">
+            <h2>Morning Light</h2>
+            <p>Some songs feel like the soft beginning of something real.</p>
+        </div>
+
+        <div class="card" onclick="openModal('silence')">
+            <h2>Between The Silence</h2>
+            <p>Not everything needs words to be understood.</p>
+        </div>
+
+        <div class="card" onclick="openModal('wonder')">
+            <h2>If You Ever Wonder</h2>
+            <p>Just in case you ever think you’re alone.</p>
+        </div>
+
+        <div class="card" onclick="openModal('still')">
+            <h2>Still Here</h2>
+            <p>No pressure. No rush. Just steady presence.</p>
+        </div>
+
     </div>
 
-    <div class="card" onclick="openModal('m2')">
-        Between The Silence<br>
-        <small>Even quiet things stay.</small>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="outsideClose(event)">
+    <div class="modal-content" id="modalContent">
+        <span class="close-btn" onclick="closeModal()">← Back</span>
+        <div id="modalBody"></div>
     </div>
-
-    <div class="card" onclick="openModal('m3')">
-        If You Ever Wonder<br>
-        <small>There’s an answer.</small>
-    </div>
-
-    <div class="card" onclick="openModal('m4')">
-        Still Here<br>
-        <small>Not loud. Just present.</small>
-    </div>
-
-</div>
-
-<!-- SECTION 1 -->
-<div class="modal" id="m1" onclick="closeModal(event,'m1')">
-<div class="modal-content">
-
-<video autoplay muted loop>
-<source src="video1.mp4" type="video/mp4">
-</video>
-
-<div class="close" onclick="forceClose('m1')">Back</div>
-
-<div class="section-text">
-<p>Some mornings don’t need explanations.<br>Just the right song.</p>
-</div>
-
-<iframe style="border-radius:12px"
-src="SPOTIFY_LINK_1"
-width="300" height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-<div class="signature">Deep</div>
-</div>
-</div>
-
-<!-- SECTION 2 -->
-<div class="modal" id="m2" onclick="closeModal(event,'m2')">
-<div class="modal-content">
-
-<video autoplay muted loop>
-<source src="video2.mp4" type="video/mp4">
-</video>
-
-<div class="close" onclick="forceClose('m2')">Back</div>
-
-<div class="section-text">
-<p>Even in silence,<br>some feelings stay.</p>
-</div>
-
-<iframe style="border-radius:12px"
-src="SPOTIFY_LINK_2"
-width="300" height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-<div class="signature">Deep</div>
-</div>
-</div>
-
-<!-- SECTION 3 -->
-<div class="modal" id="m3" onclick="closeModal(event,'m3')">
-<div class="modal-content">
-
-<video autoplay muted loop>
-<source src="video3.mp4" type="video/mp4">
-</video>
-
-<div class="close" onclick="forceClose('m3')">Back</div>
-
-<div class="section-text">
-<p>If you ever wonder…<br>I’m still here.</p>
-</div>
-
-<iframe style="border-radius:12px"
-src="SPOTIFY_LINK_3"
-width="300" height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-<div class="signature">Deep</div>
-</div>
-</div>
-
-<!-- SECTION 4 -->
-<div class="modal" id="m4" onclick="closeModal(event,'m4')">
-<div class="modal-content">
-
-<video autoplay muted loop>
-<source src="video4.mp4" type="video/mp4">
-</video>
-
-<div class="close" onclick="forceClose('m4')">Back</div>
-
-<div class="section-text">
-<p>Not rushing.<br>Not forcing.<br>Just present.</p>
-</div>
-
-<iframe style="border-radius:12px"
-src="SPOTIFY_LINK_4"
-width="300" height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-<div class="signature">Deep</div>
-</div>
 </div>
 
 <script>
+
 function closeIntro(){
-    document.getElementById("intro").style.display="none";
+    document.getElementById('intro').classList.add('hidden');
 }
 
-function openModal(id){
-    const modal = document.getElementById(id);
-    const hub = document.getElementById("hub");
-    hub.classList.add("blur");
-    modal.classList.add("active");
+function openModal(section){
+    const modal = document.getElementById('modal');
+    const body = document.getElementById('modalBody');
+
+    let content = '';
+
+    if(section === 'morning'){
+        content = `
+        <h2>Morning Light</h2>
+        <p>There’s something about mornings…<br>
+        quiet, hopeful, soft.<br>
+        This reminded me of you.</p>
+        <iframe src="https://open.spotify.com/embed/track/3mZLiEDAHIjZ8ms5Lxq33F"
+        width="100%" height="80" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div class="signature">Deep</div>
+        `;
+    }
+
+    if(section === 'silence'){
+        content = `
+        <h2>Between The Silence</h2>
+        <p>Even in distance…<br>
+        some connections stay steady.</p>
+        <iframe src="https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"
+        width="100%" height="80" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div class="signature">Deep</div>
+        `;
+    }
+
+    if(section === 'wonder'){
+        content = `
+        <h2>If You Ever Wonder</h2>
+        <p>If the thought ever crosses your mind…<br>
+        yes, I still care.</p>
+        <iframe src="https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"
+        width="100%" height="80" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div class="signature">Deep</div>
+        `;
+    }
+
+    if(section === 'still'){
+        content = `
+        <h2>Still Here</h2>
+        <p>No grand speeches.<br>
+        No dramatic promises.<br>
+        Just… here.</p>
+        <iframe src="https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"
+        width="100%" height="80" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div class="signature">Deep</div>
+        `;
+    }
+
+    body.innerHTML = content;
+    modal.classList.add('active');
 }
 
-function forceClose(id){
-    const modal = document.getElementById(id);
-    const hub = document.getElementById("hub");
-
-    modal.classList.add("closing");
-
-    setTimeout(() => {
-        modal.classList.remove("active","closing");
-        hub.classList.remove("blur");
-    },900);
+function closeModal(){
+    document.getElementById('modal').classList.remove('active');
 }
 
-function closeModal(event,id){
-    if(event.target.id === id){
-        forceClose(id);
+function outsideClose(e){
+    if(e.target.id === 'modal'){
+        closeModal();
     }
 }
+
 </script>
 
 </body>

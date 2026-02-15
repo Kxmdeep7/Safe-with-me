@@ -5,144 +5,369 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe With Me</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Dancing Script',cursive;
 }
 
 body{
+font-family:'Dancing Script', cursive;
+overflow:hidden;
 background:black;
 color:white;
+}
+
+/* ================= BACKGROUND VIDEO ================= */
+
+.video-bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
 overflow:hidden;
 }
 
-/* ===== Background Video ===== */
-video{
-position:fixed;
-top:0;
-left:0;
+.video-bg video{
 width:100%;
 height:100%;
 object-fit:cover;
-z-index:-2;
 transition:opacity 1s ease;
 }
 
-.overlay{
+.video-overlay{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.45);
+background:linear-gradient(to bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.6));
 z-index:-1;
 }
 
-/* ===== Main Page ===== */
-.main{
-height:100vh;
+/* ================= LANDING OVERLAY ================= */
+
+#intro{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:20;
+transition:opacity 1.2s ease;
+}
+
+#intro h1{
+font-size:28px;
+text-align:center;
+max-width:85%;
+line-height:1.4;
+}
+
+#intro small{
+margin-top:20px;
+opacity:0.7;
+font-size:16px;
+}
+
+.hidden{
+opacity:0;
+pointer-events:none;
+}
+
+/* ================= MAIN PAGE ================= */
+
+#main{
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-text-align:center;
+height:100vh;
 padding:20px;
+text-align:center;
 }
 
-.main h1{
-font-size:28px;
+.top-message{
+font-size:22px;
 margin-bottom:40px;
-opacity:0.9;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:15px;
-width:90%;
-max-width:400px;
+gap:20px;
+width:100%;
+max-width:500px;
 }
 
-.section{
-height:120px;
-border:1px solid rgba(255,255,255,0.3);
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:15px;
+.section-card{
 background:rgba(255,255,255,0.08);
-backdrop-filter:blur(6px);
+backdrop-filter:blur(10px);
+border-radius:25px;
+padding:30px 10px;
+font-size:22px;
 cursor:pointer;
-transition:0.3s;
+transition:0.3s ease;
 }
 
-.section:hover{
+.section-card:hover{
 background:rgba(255,255,255,0.15);
+transform:scale(1.03);
 }
 
 .signature{
 position:fixed;
 bottom:15px;
 right:20px;
-font-size:22px;
-opacity:0.8;
+font-size:26px;
+opacity:0.85;
 }
 
-/* ===== Modal ===== */
+/* ================= MODAL ================= */
+
 .modal{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-display:none;
+background:rgba(0,0,0,0.5);
+display:flex;
 align-items:center;
 justify-content:center;
-background:rgba(0,0,0,0.5);
+opacity:0;
+pointer-events:none;
+transition:opacity 0.6s ease;
+}
+
+.modal.active{
+opacity:1;
+pointer-events:auto;
 }
 
 .modal-content{
 width:80%;
-height:75%;
+max-width:420px;
 background:rgba(0,0,0,0.35);
-backdrop-filter:blur(8px);
-border-radius:25px;
-padding:20px;
-display:flex;
-flex-direction:column;
-align-items:center;
-overflow:hidden;
+backdrop-filter:blur(6px);
+border-radius:30px;
+padding:25px;
+text-align:center;
 position:relative;
-}
-
-.close{
-position:absolute;
-top:15px;
-left:20px;
-cursor:pointer;
-font-size:20px;
 }
 
 .modal h2{
 margin-bottom:20px;
-text-align:center;
+font-size:26px;
 }
 
 .song-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
-width:100%;
 }
 
-.song{
+.song-card{
+background:rgba(255,255,255,0.12);
+border-radius:20px;
+padding:20px 10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.song-card:hover{
+background:rgba(255,255,255,0.2);
+}
+
+.player-container{
+margin-top:20px;
+display:none;
+}
+
+.player-container iframe{
+width:100%;
 height:80px;
-border:1px solid rgba(255,255,255,0.3);
+border-radius:12px;
+}
+
+.modal-signature{
+position:absolute;
+bottom:10px;
+right:15px;
+font-size:22px;
+opacity:0.8;
+}
+
+.close-zone{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="video-bg">
+<video id="bgVideo" autoplay muted loop playsinline>
+<source src="Videosmain.mp4" type="video/mp4">
+</video>
+</div>
+
+<div class="video-overlay"></div>
+
+<!-- INTRO -->
+
+<div id="intro">
+<h1>You matter to me more than you realize.</h1>
+<small>Tap anywhere</small>
+<div class="signature">Deep</div>
+</div>
+
+<!-- MAIN PAGE -->
+
+<div id="main">
+<div class="top-message">I’m not going anywhere.</div>
+
+<div class="grid">
+<div class="section-card" onclick="openSection('morning')">Morning</div>
+<div class="section-card" onclick="openSection('day')">Day</div>
+<div class="section-card" onclick="openSection('dusk')">Dusk</div>
+<div class="section-card" onclick="openSection('night')">Night</div>
+</div>
+
+<div class="signature">Deep</div>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal" onclick="closeModal(event)">
+<div class="modal-content">
+<h2 id="modalTitle"></h2>
+
+<div class="song-grid" id="songGrid"></div>
+
+<div class="player-container" id="playerContainer"></div>
+
+<div class="modal-signature">Deep</div>
+</div>
+</div>
+
+<script>
+
+const intro = document.getElementById("intro");
+intro.addEventListener("click",()=>{
+intro.classList.add("hidden");
+});
+
+const bgVideo = document.getElementById("bgVideo");
+
+function switchVideo(src){
+bgVideo.style.opacity=0;
+setTimeout(()=>{
+bgVideo.src=src;
+bgVideo.load();
+bgVideo.play();
+bgVideo.style.opacity=1;
+},800);
+}
+
+const sections = {
+morning:{
+title:"Morning",
+video:"Videosmorning.mp4",
+songs:[
+["Lover","0XwRlvv3KlOu4HWlOH34XG"],
+["Guess It's Love","2gupOLBb6OGYAWai6nlmDv"],
+["Thinking of You","0rSU2KwpOCqLVDCPwd4WbE"],
+["With You","0xIuPDzJSnJywALez8dwKR"]
+]
+},
+day:{
+title:"Day",
+video:"Videosday.mp4",
+songs:[
+["Over and Over","7IU3w87VCx7qiar56GQ5OI"],
+["My Love","1tUYdjPkVHi9u0ecaFgnmD"],
+["Since Tum","5GnF4uvEcIibqcoYgzIlgS"],
+["Mere Hisse De Phull","3zsrxaFaZFBrNY1EM69wMm"]
+]
+},
+dusk:{
+title:"Dusk",
+video:"Videosdusk.mp4",
+songs:[
+["Ajj Kal Ve","7G7b3jsvPETNyccazdsubE"],
+["Priceless","3tOY2szKRlRHyTIETz4dSs"],
+["Departure Lane","7wGgYAOMhhRObOGdWlJ9Hi"],
+["Fallin Again","0K5LSPVXxIR30OlB3MHjN6"]
+]
+},
+night:{
+title:"Night",
+video:"Videosnight.mp4",
+songs:[
+["Yaad","0CTLV9Fr5CEkvhqmBjvEIU"],
+["Vass Chal Da","4s71PFrRkQGLvISXotXyax"],
+["Kehkashan","2NTtfjk6ShR9uQcKJh1yX9"],
+["Charmer","1F2sn8iJA607Xfz1K3d9dJ"]
+]
+}
+};
+
+function openSection(key){
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const songGrid = document.getElementById("songGrid");
+const playerContainer = document.getElementById("playerContainer");
+
+modalTitle.innerText = sections[key].title;
+songGrid.innerHTML="";
+playerContainer.style.display="none";
+playerContainer.innerHTML="";
+
+switchVideo(sections[key].video);
+
+sections[key].songs.forEach(song=>{
+let div=document.createElement("div");
+div.className="song-card";
+div.innerText=song[0];
+div.onclick=()=>{
+playerContainer.style.display="block";
+playerContainer.innerHTML=
+`<iframe src="https://open.spotify.com/embed/track/${song[1]}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+};
+songGrid.appendChild(div);
+});
+
+modal.classList.add("active");
+}
+
+function closeModal(e){
+if(e.target.classList.contains("modal")){
+document.getElementById("modal").classList.remove("active");
+switchVideo("Videosmain.mp4");
+}
+}
+
+</script>
+
+</body>
+</html>border:1px solid rgba(255,255,255,0.3);
 display:flex;
 align-items:center;
 justify-content:center;

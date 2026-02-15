@@ -12,34 +12,42 @@
 html,body{
 height:100%;
 font-family:'Caveat',cursive;
-background:#000;
+background:#0d0d12;
 color:white;
 overflow:hidden;
 }
 
-/* Animated Background */
-body{
-background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c1c);
-background-size:400% 400%;
-animation:gradientMove 18s ease infinite;
+/* ===== Animated Cinematic Background ===== */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 30%, rgba(255,180,120,0.2), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(120,160,255,0.2), transparent 40%),
+linear-gradient(120deg,#141421,#1d1d2e,#101018);
+background-size:200% 200%;
+animation:moveBg 18s ease infinite;
+z-index:-2;
 }
 
-@keyframes gradientMove{
+@keyframes moveBg{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
 
-/* Soft glow */
+/* Glow overlay */
 body::after{
 content:'';
 position:fixed;
 inset:0;
-background:radial-gradient(circle at center, rgba(255,180,120,0.15), transparent 70%);
+background:radial-gradient(circle at center, rgba(255,220,180,0.15), transparent 70%);
 pointer-events:none;
+z-index:-1;
 }
 
-/* STORY */
+/* ===== STORY INTRO ===== */
 #story{
 position:fixed;
 inset:0;
@@ -48,8 +56,7 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:20;
-transition:opacity .6s ease;
+z-index:10;
 }
 
 .story-img{
@@ -59,117 +66,128 @@ height:65vh;
 background-size:cover;
 background-position:center;
 border-radius:20px;
-box-shadow:0 0 35px rgba(255,255,255,0.2);
-transition:.5s ease;
+box-shadow:0 0 40px rgba(255,255,255,0.2);
+transition:opacity .4s ease;
 }
 
 .enter-btn{
 margin-top:25px;
-padding:12px 30px;
+padding:10px 25px;
 border-radius:30px;
-background:rgba(255,255,255,0.15);
 border:1px solid rgba(255,255,255,0.4);
-box-shadow:0 0 15px rgba(255,255,255,0.5);
-cursor:pointer;
+background:rgba(255,255,255,0.1);
 display:none;
+cursor:pointer;
 }
 
-/* MAIN */
+/* ===== MAIN PAGE ===== */
 #main{
 display:none;
 height:100%;
-display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+padding:30px;
 text-align:center;
-padding:20px;
+animation:fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
 }
 
 .main-title{
-font-size:26px;
-margin-bottom:35px;
-text-shadow:0 0 15px rgba(255,255,255,0.4);
+font-size:28px;
+margin-bottom:40px;
+text-shadow:0 0 20px rgba(255,255,255,0.4);
 }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
-width:100%;
-max-width:400px;
-}
-
-.section-card{
-padding:30px 10px;
-background:rgba(255,255,255,0.08);
+.section{
+width:90%;
+max-width:420px;
+padding:18px;
+margin:10px 0;
 border-radius:18px;
+background:rgba(255,255,255,0.08);
 backdrop-filter:blur(6px);
 cursor:pointer;
 transition:.3s;
 }
 
-.section-card:hover{
+.section:hover{
 background:rgba(255,255,255,0.15);
 }
 
 .signature{
 position:fixed;
-bottom:18px;
+bottom:15px;
 right:20px;
 font-size:22px;
-opacity:.85;
+opacity:.8;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal{
 position:fixed;
 inset:0;
 display:none;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.65);
+background:rgba(0,0,0,0.5);
+animation:fadeIn .6s ease forwards;
 }
 
 .modal-content{
 width:90%;
-height:88%;
+height:85%;
 background:rgba(0,0,0,0.55);
-backdrop-filter:blur(4px);
-border-radius:22px;
+backdrop-filter:blur(8px);
+border-radius:20px;
 padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
+overflow:hidden;
 position:relative;
 }
 
+.back-btn{
+position:absolute;
+top:15px;
+left:20px;
+cursor:pointer;
+font-size:18px;
+opacity:.7;
+}
+
 .modal h2{
-margin-bottom:18px;
+margin-top:30px;
+margin-bottom:20px;
 }
 
 .song-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:14px;
+gap:15px;
 width:100%;
 }
 
 .song-card{
 aspect-ratio:1/1;
+border-radius:15px;
 background:rgba(255,255,255,0.12);
-border-radius:16px;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 text-align:center;
-padding:10px;
+padding:12px;
 cursor:pointer;
 transition:.3s;
 }
 
 .song-card:hover{
-background:rgba(255,255,255,0.22);
+background:rgba(255,255,255,0.2);
 }
 
 .player{
@@ -184,12 +202,6 @@ height:80px;
 border:none;
 border-radius:12px;
 }
-
-.close-zone{
-position:absolute;
-inset:0;
-z-index:-1;
-}
 </style>
 </head>
 <body>
@@ -197,19 +209,17 @@ z-index:-1;
 <!-- STORY -->
 <div id="story">
 <div id="storyImage" class="story-img"></div>
-<div id="enterBtn" class="enter-btn" onclick="enterSite()">Tap to Enter</div>
+<div id="enterBtn" class="enter-btn" onclick="enterSite()">Tap to enter</div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
 <div class="main-title">You matter to me more than you realize.</div>
 
-<div class="grid">
-<div class="section-card" onclick="openSection('morning')">🌅 Morning Light</div>
-<div class="section-card" onclick="openSection('day')">☀️ Day Calm</div>
-<div class="section-card" onclick="openSection('dusk')">🌇 Golden Dusk</div>
-<div class="section-card" onclick="openSection('night')">🌙 Midnight Glow</div>
-</div>
+<div class="section" onclick="openSection('morning')">🌅 Morning Light</div>
+<div class="section" onclick="openSection('day')">☀️ Day Calm</div>
+<div class="section" onclick="openSection('dusk')">🌇 Golden Dusk</div>
+<div class="section" onclick="openSection('night')">🌙 Midnight Glow</div>
 
 <div class="signature">Deep</div>
 </div>
@@ -217,6 +227,7 @@ z-index:-1;
 <!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
+<div class="back-btn" onclick="closeModal()">← Back</div>
 <h2 id="modalTitle"></h2>
 <div class="song-grid" id="songs"></div>
 <div class="player" id="player"></div>
@@ -227,55 +238,55 @@ z-index:-1;
 <script>
 
 /* STORY IMAGES */
-const images=['1.jpg','2.jpg','3.jpg'];
+const images=["1.jpg","2.jpg","3.jpg"];
 let current=0;
 const storyImg=document.getElementById('storyImage');
 const enterBtn=document.getElementById('enterBtn');
-storyImg.style.backgroundImage=`url(${images[current]})`;
 
-storyImg.addEventListener('click',()=>{
+function updateStory(){
+storyImg.style.backgroundImage=`url(${images[current]})`;
+enterBtn.style.display=(current===images.length-1)?"block":"none";
+}
+updateStory();
+
+storyImg.addEventListener("click",()=>{
 if(current<images.length-1){
 current++;
-storyImg.style.backgroundImage=`url(${images[current]})`;
-if(current===images.length-1){
-enterBtn.style.display='block';
-}
+updateStory();
 }
 });
 
+/* ENTER SITE */
 function enterSite(){
-document.getElementById('story').style.opacity='0';
-setTimeout(()=>{
 document.getElementById('story').style.display='none';
 document.getElementById('main').style.display='flex';
-},600);
 }
 
-/* SONGS */
+/* SONG DATA */
 const songs={
 morning:[
-["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["Guess it's love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["Thinking of you","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["With you","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
+["where comfort feels natural","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
+["that feeling you don’t question","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
+["you cross my mind quietly","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
+["peace sits here","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
 ],
 day:[
-["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
-["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
-["Over and Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
-["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
+["a universe in someone’s eyes","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
+["simple. steady. real.","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
+["still choosing the same heart","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
+["like the first time… again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
 ],
 dusk:[
-["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
-["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
-["Mere Hisse De Phull","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
-["Ajj Kal Ve","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
+["everything shifted softly","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
+["some memories stay warm","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
+["what was meant for me","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
+["learning love differently","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
 ],
 night:[
-["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
-["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
-["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
-["Noor","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
+["some things aren’t replaceable","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
+["roads we didn’t take","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
+["dangerously magnetic","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
+["light in the darkest room","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
 ]
 };
 
@@ -296,12 +307,12 @@ grid.appendChild(div);
 
 function playSong(link){
 const player=document.getElementById('player');
-player.innerHTML=`<iframe src="${link}" allow="autoplay; encrypted-media;"></iframe>`;
+player.innerHTML=`<iframe src="${link}" allow="autoplay; clipboard-write; encrypted-media;"></iframe>`;
 player.style.display='block';
 }
 
 function closeModal(e){
-if(e.target.id==='modal'){
+if(!e || e.target.id==='modal'){
 document.getElementById('modal').style.display='none';
 document.getElementById('player').style.display='none';
 }

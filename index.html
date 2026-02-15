@@ -5,380 +5,125 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safe With Me</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-font-family:'Dancing Script', cursive;
+font-family:'Dancing Script',cursive;
 overflow:hidden;
 background:black;
 color:white;
 }
 
-/* ================= BACKGROUND VIDEO ================= */
-
+/* VIDEO BACKGROUND */
 .video-bg{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-2;
-overflow:hidden;
-}
-
-.video-bg video{
+top:0;left:0;
 width:100%;
 height:100%;
 object-fit:cover;
-transition:opacity 1s ease;
-}
-
-.video-overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(to bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.6));
-z-index:-1;
-}
-
-/* ================= LANDING OVERLAY ================= */
-
-#intro{
-position:fixed;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.75);
-backdrop-filter:blur(10px);
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:20;
+z-index:-2;
 transition:opacity 1.2s ease;
 }
 
-#intro h1{
-font-size:28px;
-text-align:center;
-max-width:85%;
-line-height:1.4;
+.overlay{
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(4px);
+z-index:-1;
 }
 
-#intro small{
-margin-top:20px;
-opacity:0.7;
-font-size:16px;
-}
-
-.hidden{
-opacity:0;
-pointer-events:none;
-}
-
-/* ================= MAIN PAGE ================= */
-
-#main{
+/* MAIN PAGE */
+.main{
+height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-height:100vh;
-padding:20px;
 text-align:center;
+padding:20px;
 }
 
-.top-message{
-font-size:22px;
+.title{
+font-size:24px;
 margin-bottom:40px;
 }
 
 .grid{
-display:grid;
-grid-template-columns:1fr 1fr;
+display:flex;
+flex-direction:column;
 gap:20px;
 width:100%;
-max-width:500px;
+max-width:350px;
 }
 
-.section-card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-border-radius:25px;
-padding:30px 10px;
-font-size:22px;
-cursor:pointer;
-transition:0.3s ease;
-}
-
-.section-card:hover{
-background:rgba(255,255,255,0.15);
-transform:scale(1.03);
-}
-
-.signature{
-position:fixed;
-bottom:15px;
-right:20px;
-font-size:26px;
-opacity:0.85;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:flex;
-align-items:center;
-justify-content:center;
-opacity:0;
-pointer-events:none;
-transition:opacity 0.6s ease;
-}
-
-.modal.active{
-opacity:1;
-pointer-events:auto;
-}
-
-.modal-content{
-width:80%;
-max-width:420px;
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(6px);
-border-radius:30px;
-padding:25px;
-text-align:center;
-position:relative;
-}
-
-.modal h2{
-margin-bottom:20px;
-font-size:26px;
-}
-
-.song-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.song-card{
-background:rgba(255,255,255,0.12);
+.card{
+padding:18px;
 border-radius:20px;
-padding:20px 10px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.2);
 cursor:pointer;
 transition:0.3s;
 }
 
-.song-card:hover{
-background:rgba(255,255,255,0.2);
+.card:active{
+transform:scale(0.97);
 }
 
-.player-container{
-margin-top:20px;
-display:none;
-}
-
-.player-container iframe{
-width:100%;
-height:80px;
-border-radius:12px;
-}
-
-.modal-signature{
-position:absolute;
-bottom:10px;
-right:15px;
-font-size:22px;
+.deep-main{
+position:fixed;
+bottom:20px;
+right:20px;
+font-size:20px;
 opacity:0.8;
 }
 
-.close-zone{
-position:absolute;
-top:0;
-left:0;
+/* MODAL */
+.modal{
+position:fixed;
+top:0;left:0;
 width:100%;
 height:100%;
-z-index:-1;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="video-bg">
-<video id="bgVideo" autoplay muted loop playsinline>
-<source src="Videosmain.mp4" type="video/mp4">
-</video>
-</div>
-
-<div class="video-overlay"></div>
-
-<!-- INTRO -->
-
-<div id="intro">
-<h1>You matter to me more than you realize.</h1>
-<small>Tap anywhere</small>
-<div class="signature">Deep</div>
-</div>
-
-<!-- MAIN PAGE -->
-
-<div id="main">
-<div class="top-message">I’m not going anywhere.</div>
-
-<div class="grid">
-<div class="section-card" onclick="openSection('morning')">Morning</div>
-<div class="section-card" onclick="openSection('day')">Day</div>
-<div class="section-card" onclick="openSection('dusk')">Dusk</div>
-<div class="section-card" onclick="openSection('night')">Night</div>
-</div>
-
-<div class="signature">Deep</div>
-</div>
-
-<!-- MODAL -->
-
-<div class="modal" id="modal" onclick="closeModal(event)">
-<div class="modal-content">
-<h2 id="modalTitle"></h2>
-
-<div class="song-grid" id="songGrid"></div>
-
-<div class="player-container" id="playerContainer"></div>
-
-<div class="modal-signature">Deep</div>
-</div>
-</div>
-
-<script>
-
-const intro = document.getElementById("intro");
-intro.addEventListener("click",()=>{
-intro.classList.add("hidden");
-});
-
-const bgVideo = document.getElementById("bgVideo");
-
-function switchVideo(src){
-bgVideo.style.opacity=0;
-setTimeout(()=>{
-bgVideo.src=src;
-bgVideo.load();
-bgVideo.play();
-bgVideo.style.opacity=1;
-},800);
-}
-
-const sections = {
-morning:{
-title:"Morning",
-video:"Videosmorning.mp4",
-songs:[
-["Lover","0XwRlvv3KlOu4HWlOH34XG"],
-["Guess It's Love","2gupOLBb6OGYAWai6nlmDv"],
-["Thinking of You","0rSU2KwpOCqLVDCPwd4WbE"],
-["With You","0xIuPDzJSnJywALez8dwKR"]
-]
-},
-day:{
-title:"Day",
-video:"Videosday.mp4",
-songs:[
-["Over and Over","7IU3w87VCx7qiar56GQ5OI"],
-["My Love","1tUYdjPkVHi9u0ecaFgnmD"],
-["Since Tum","5GnF4uvEcIibqcoYgzIlgS"],
-["Mere Hisse De Phull","3zsrxaFaZFBrNY1EM69wMm"]
-]
-},
-dusk:{
-title:"Dusk",
-video:"Videosdusk.mp4",
-songs:[
-["Ajj Kal Ve","7G7b3jsvPETNyccazdsubE"],
-["Priceless","3tOY2szKRlRHyTIETz4dSs"],
-["Departure Lane","7wGgYAOMhhRObOGdWlJ9Hi"],
-["Fallin Again","0K5LSPVXxIR30OlB3MHjN6"]
-]
-},
-night:{
-title:"Night",
-video:"Videosnight.mp4",
-songs:[
-["Yaad","0CTLV9Fr5CEkvhqmBjvEIU"],
-["Vass Chal Da","4s71PFrRkQGLvISXotXyax"],
-["Kehkashan","2NTtfjk6ShR9uQcKJh1yX9"],
-["Charmer","1F2sn8iJA607Xfz1K3d9dJ"]
-]
-}
-};
-
-function openSection(key){
-const modal = document.getElementById("modal");
-const modalTitle = document.getElementById("modalTitle");
-const songGrid = document.getElementById("songGrid");
-const playerContainer = document.getElementById("playerContainer");
-
-modalTitle.innerText = sections[key].title;
-songGrid.innerHTML="";
-playerContainer.style.display="none";
-playerContainer.innerHTML="";
-
-switchVideo(sections[key].video);
-
-sections[key].songs.forEach(song=>{
-let div=document.createElement("div");
-div.className="song-card";
-div.innerText=song[0];
-div.onclick=()=>{
-playerContainer.style.display="block";
-playerContainer.innerHTML=
-`<iframe src="https://open.spotify.com/embed/track/${song[1]}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
-};
-songGrid.appendChild(div);
-});
-
-modal.classList.add("active");
-}
-
-function closeModal(e){
-if(e.target.classList.contains("modal")){
-document.getElementById("modal").classList.remove("active");
-switchVideo("Videosmain.mp4");
-}
-}
-
-</script>
-
-</body>
-</html>border:1px solid rgba(255,255,255,0.3);
-display:flex;
+display:none;
 align-items:center;
 justify-content:center;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(6px);
+}
+
+.modal-content{
+width:90%;
+max-width:420px;
+background:rgba(255,255,255,0.12);
+border-radius:20px;
+padding:20px;
+position:relative;
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.2);
+}
+
+.modal h2{
+margin-bottom:20px;
+font-size:22px;
+}
+
+.song{
+padding:12px;
 border-radius:12px;
-background:rgba(255,255,255,0.1);
+margin-bottom:10px;
+background:rgba(255,255,255,0.15);
 cursor:pointer;
+text-align:center;
 }
 
 .player{
 margin-top:15px;
-width:100%;
 display:none;
 }
 
@@ -388,107 +133,129 @@ height:80px;
 border-radius:12px;
 border:none;
 }
+
+.close{
+position:absolute;
+top:10px;
+left:15px;
+font-size:20px;
+cursor:pointer;
+}
+
+.deep-modal{
+position:absolute;
+bottom:10px;
+right:15px;
+font-size:18px;
+opacity:0.7;
+}
 </style>
 </head>
-
 <body>
 
-<video id="bgVideo" autoplay muted loop>
-<source src="VideosMorning.mp4" type="video/mp4">
+<!-- Background Video -->
+<video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+<source src="Videosmain.mp4" type="video/mp4">
 </video>
-
 <div class="overlay"></div>
 
 <div class="main">
-<h1>You matter to me more than you realize.</h1>
+<div class="title">You matter to me more than you realize.</div>
 
 <div class="grid">
-<div class="section" onclick="openModal('morning','VideosMorning.mp4')">Morning</div>
-<div class="section" onclick="openModal('day','VideosDay.mp4')">Day</div>
-<div class="section" onclick="openModal('dusk','VideosDusk.mp4')">Dusk</div>
-<div class="section" onclick="openModal('night','VideosNight.mp4')">Night</div>
+<div class="card" onclick="openSection('morning')">🌅 Morning</div>
+<div class="card" onclick="openSection('day')">☀️ Day</div>
+<div class="card" onclick="openSection('dusk')">🌇 Dusk</div>
+<div class="card" onclick="openSection('night')">🌙 Night</div>
 </div>
 </div>
 
-<div class="signature">Deep</div>
+<div class="deep-main">Deep</div>
 
-<!-- ===== Modal ===== -->
-<div class="modal" id="modal" onclick="closeModal(event)">
-<div class="modal-content" onclick="event.stopPropagation()">
-<div class="close" onclick="forceClose()">Back</div>
-<h2 id="modalTitle"></h2>
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="outsideClick(event)">
+<div class="modal-content">
+<div class="close" onclick="closeModal()">←</div>
+<h2 id="sectionTitle"></h2>
 
-<div class="song-grid" id="songGrid"></div>
+<div id="songs"></div>
+<div id="player" class="player"></div>
 
-<div class="player" id="player"></div>
-
-<div class="signature">Deep</div>
+<div class="deep-modal">Deep</div>
 </div>
 </div>
 
 <script>
+const videos={
+morning:"Videosmorning.mp4",
+day:"Videosday.mp4",
+dusk:"Videosdusk.mp4",
+night:"Videosnight.mp4"
+};
 
-const songs = {
+const songData={
 morning:[
-["Lover","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["Guess It's Love","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["Thinking Of You","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["With You","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
+{title:"Lover",id:"0XwRlvv3KlOu4HWlOH34XG"},
+{title:"Guess It's Love",id:"2gupOLBb6OGYAWai6nlmDv"},
+{title:"With You",id:"0xIuPDzJSnJywALez8dwKR"},
+{title:"Thinking Of You",id:"0rSU2KwpOCqLVDCPwd4WbE"}
 ],
 day:[
-["Departure Lane","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
-["Kehkashan","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
-["My Love","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
-["Over And Over","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"]
+{title:"Priceless",id:"3tOY2szKRlRHyTIETz4dSs"},
+{title:"My Love",id:"1tUYdjPkVHi9u0ecaFgnmD"},
+{title:"Since Tum",id:"5GnF4uvEcIibqcoYgzIlgS"},
+{title:"Charmer",id:"1F2sn8iJA607Xfz1K3d9dJ"}
 ],
 dusk:[
-["Falling Again","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"],
-["Since Tum","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
-["Yaad","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
-["Mere Hisse De Phull","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"]
+{title:"Departure Lane",id:"7wGgYAOMhhRObOGdWlJ9Hi"},
+{title:"Kehkashan",id:"2NTtfjk6ShR9uQcKJh1yX9"},
+{title:"Mere Hisse De Phull",id:"3zsrxaFaZFBrNY1EM69wMm"},
+{title:"Ajj Kal Ve",id:"7G7b3jsvPETNyccazdsubE"}
 ],
 night:[
-["Ajj Kal Ve","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"],
-["Priceless","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
-["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
-["Vass Chal Da","https://open.spotify.com/embed/track/4s71PFrRkQGLvISXotXyax"]
+{title:"Yaad",id:"0CTLV9Fr5CEkvhqmBjvEIU"},
+{title:"Over And Over",id:"7IU3w87VCx7qiar56GQ5OI"},
+{title:"Falling Again",id:"0K5LSPVXxIR30OlB3MHjN6"},
+{title:"Dildariyan",id:"16XBN3UaDs2v84EUMmHC1t"}
 ]
 };
 
-function openModal(section,videoSrc){
-document.getElementById('modal').style.display='flex';
-document.getElementById('modalTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
-document.getElementById('bgVideo').src=videoSrc;
+function openSection(section){
+document.getElementById("modal").style.display="flex";
+document.getElementById("bgVideo").src=videos[section];
 
-const grid=document.getElementById('songGrid');
-grid.innerHTML='';
-document.getElementById('player').style.display='none';
+document.getElementById("sectionTitle").innerText=section.charAt(0).toUpperCase()+section.slice(1);
 
-songs[section].forEach(song=>{
-let div=document.createElement('div');
-div.className='song';
-div.innerText=song[0];
-div.onclick=function(){
-let player=document.getElementById('player');
-player.innerHTML=`<iframe src="${song[1]}" allow="autoplay; clipboard-write; encrypted-media"></iframe>`;
-player.style.display='block';
-};
-grid.appendChild(div);
+const songsContainer=document.getElementById("songs");
+songsContainer.innerHTML="";
+document.getElementById("player").style.display="none";
+
+songData[section].forEach(song=>{
+const div=document.createElement("div");
+div.className="song";
+div.innerText=song.title;
+div.onclick=()=>playSong(song.id);
+songsContainer.appendChild(div);
 });
 }
 
-function closeModal(e){
-if(e.target.classList.contains('modal')){
-document.getElementById('modal').style.display='none';
-document.getElementById('player').style.display='none';
-}
-}
-
-function forceClose(){
-document.getElementById('modal').style.display='none';
-document.getElementById('player').style.display='none';
+function playSong(id){
+const player=document.getElementById("player");
+player.innerHTML=`<iframe src="https://open.spotify.com/embed/track/${id}" allow="encrypted-media"></iframe>`;
+player.style.display="block";
 }
 
+function closeModal(){
+document.getElementById("modal").style.display="none";
+document.getElementById("bgVideo").src="Videosmain.mp4";
+document.getElementById("player").style.display="none";
+}
+
+function outsideClick(e){
+if(e.target.id==="modal"){
+closeModal();
+}
+}
 </script>
 
 </body>

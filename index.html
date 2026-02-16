@@ -2,42 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Safe With Me</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-
 html,body{
 height:100%;
 font-family:'Caveat',cursive;
+background:#000;
 color:white;
 overflow:hidden;
 }
 
-/* ===== MAIN BACKGROUND ===== */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:url('main.jpg') center/cover no-repeat;
-filter:brightness(0.45) contrast(1.05);
-z-index:-2;
+/* ---------- FADE ANIMATION ---------- */
+.fade{
+animation:fadeIn 1s ease forwards;
+}
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
 }
 
-/* Warm glow */
-body::after{
-content:"";
-position:fixed;
-inset:0;
-background:radial-gradient(circle at center, rgba(255,190,120,0.18), transparent 70%);
-z-index:-1;
-pointer-events:none;
-}
-
-/* ===== STORY ===== */
+/* ---------- STORY ---------- */
 #story{
 position:fixed;
 inset:0;
@@ -46,145 +35,152 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:10;
-transition:opacity 0.8s ease;
+z-index:50;
 }
 
 .story-img{
 width:90%;
-max-width:420px;
+max-width:380px;
 height:70vh;
-background-size:contain;
+background-size:cover;
 background-position:center;
-background-repeat:no-repeat;
-transition:0.5s ease;
+border-radius:20px;
+box-shadow:0 0 40px rgba(255,200,150,0.3);
+transition:opacity .4s ease;
 }
 
-.story-nav{
-margin-top:20px;
-display:flex;
-gap:20px;
-}
-
-.story-btn{
-padding:10px 18px;
-border-radius:25px;
-border:1px solid rgba(255,255,255,0.4);
-background:rgba(255,255,255,0.1);
-cursor:pointer;
-}
-
-#enterBtn{
+.enter-btn{
 margin-top:25px;
+padding:12px 28px;
+border-radius:30px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.4);
 font-size:20px;
 display:none;
 cursor:pointer;
+box-shadow:0 0 15px rgba(255,200,150,0.4);
 }
 
-/* ===== MAIN PAGE ===== */
+/* ---------- MAIN ---------- */
 #main{
 display:none;
 height:100%;
+width:100%;
+position:relative;
+background:url("main.jpg") center/cover no-repeat;
+}
+
+#main::after{
+content:'';
+position:absolute;
+inset:0;
+background:linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+}
+
+.main-content{
+position:relative;
+z-index:2;
+height:100%;
+display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:20px;
 text-align:center;
+padding:20px;
 }
 
 .main-title{
 font-size:28px;
 margin-bottom:35px;
-text-shadow:0 0 20px rgba(255,255,255,0.4);
+text-shadow:0 0 20px rgba(255,200,150,0.6);
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:20px;
+gap:18px;
 width:100%;
-max-width:420px;
+max-width:400px;
 }
 
-.section{
-padding:35px 10px;
-background:rgba(0,0,0,0.35);
-border-radius:18px;
+.section-card{
+padding:28px 10px;
+background:rgba(255,255,255,0.08);
 backdrop-filter:blur(6px);
+border-radius:18px;
 cursor:pointer;
-transition:0.3s ease;
+transition:.3s;
 }
 
-.section:hover{
-background:rgba(255,255,255,0.12);
+.section-card:hover{
+background:rgba(255,255,255,0.15);
 }
 
 .signature{
-position:fixed;
-bottom:18px;
+position:absolute;
+bottom:20px;
 right:20px;
 font-size:22px;
-opacity:0.9;
+opacity:.8;
 }
 
-/* ===== MODAL ===== */
+/* ---------- MODAL ---------- */
 .modal{
 position:fixed;
 inset:0;
 display:none;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.75);
-z-index:15;
+background:rgba(0,0,0,0.85);
+z-index:100;
 }
 
-.modal-box{
-width:92%;
+.modal-content{
+width:95%;
+max-width:420px;
 height:88%;
-background:rgba(0,0,0,0.55);
-backdrop-filter:blur(8px);
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(10px);
 border-radius:20px;
 padding:20px;
+position:relative;
 display:flex;
 flex-direction:column;
 align-items:center;
-position:relative;
-overflow:hidden;
+overflow-y:auto;
 }
 
-.modal-title{
-font-size:26px;
-margin-bottom:15px;
+.back-btn{
+position:absolute;
+top:15px;
+left:15px;
+font-size:18px;
+cursor:pointer;
 }
 
 .song-grid{
+margin-top:40px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
 width:100%;
 }
 
-.song{
+.song-card{
 aspect-ratio:1/1;
+background:rgba(255,255,255,0.1);
 border-radius:16px;
-background:rgba(255,255,255,0.08);
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
+text-align:center;
 padding:10px;
 cursor:pointer;
-text-align:center;
-}
-
-.song small{
-opacity:0.7;
-font-size:16px;
 }
 
 .player{
-margin-top:15px;
 width:100%;
+margin-top:15px;
 display:none;
 }
 
@@ -195,155 +191,165 @@ border:none;
 border-radius:12px;
 }
 
-/* ===== VIDEO SECTION ===== */
-.video-box{
-margin-top:10px;
+.video-wrap{
+margin-top:50px;
 width:100%;
-height:100%;
+display:flex;
+justify-content:center;
+}
+
+video.section-video{
+width:100%;
+border-radius:15px;
 display:none;
-flex-direction:column;
-align-items:center;
 }
 
-.video-box video{
-width:100%;
-max-height:60vh;
-border-radius:18px;
-}
-
-.close-video{
+.end-text{
 margin-top:15px;
-padding:8px 18px;
-border-radius:20px;
-border:1px solid white;
-cursor:pointer;
+opacity:0;
+transition:opacity 1s ease;
+text-align:center;
 }
-
 </style>
 </head>
 <body>
 
 <!-- STORY -->
 <div id="story">
-<div id="storyImg" class="story-img"></div>
-
-<div class="story-nav">
-<div class="story-btn" onclick="prev()">◀</div>
-<div class="story-btn" onclick="next()">▶</div>
-</div>
-
-<div id="enterBtn" onclick="enterSite()">Tap to enter</div>
+<div id="storyImage" class="story-img"></div>
+<div id="enterBtn" class="enter-btn" onclick="enterSite()">Tap to enter</div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
-<div class="main-title">You matter to me more than you realize.</div>
+<div class="main-content">
+<div class="main-title">Some feelings don’t leave. They stay quietly.</div>
 
 <div class="grid">
-<div class="section" onclick="openSection('Morning 🌅')">🌅 Morning</div>
-<div class="section" onclick="openSection('Day ☀')">☀ Day</div>
-<div class="section" onclick="openSection('Dusk 🌇')">🌇 Dusk</div>
-<div class="section" onclick="openSection('Night 🌙', true)">🌙 Night</div>
+<div class="section-card" onclick="openSection('morning')">🌅 Morning Light</div>
+<div class="section-card" onclick="openSection('day')">☀ Quiet Day</div>
+<div class="section-card" onclick="openSection('dusk')">🌇 Golden Dusk</div>
+<div class="section-card" onclick="openSection('night')">🌙 Midnight Thoughts</div>
+<div class="section-card" onclick="openSection('video')">🕊 One Honest Conversation</div>
 </div>
 
 <div class="signature">Deep</div>
+</div>
 </div>
 
 <!-- MODAL -->
-<div id="modal" class="modal" onclick="closeModal(event)">
-<div class="modal-box" onclick="event.stopPropagation()">
+<div id="modal" class="modal">
+<div class="modal-content fade">
+<div class="back-btn" onclick="closeModal()">← Back</div>
 
-<div id="modalTitle" class="modal-title"></div>
+<h2 id="modalTitle"></h2>
 
 <div id="songGrid" class="song-grid"></div>
-
 <div id="player" class="player"></div>
 
-<div id="videoSection" class="video-box">
-<video id="specialVideo" controls>
+<div class="video-wrap">
+<video id="sectionVideo" class="section-video" controls>
 <source src="video.mp4" type="video/mp4">
 </video>
-<div class="close-video" onclick="closeVideo()">Back</div>
+</div>
+
+<div id="endText" class="end-text">
+If something shattered,<br>let’s rebuild it gently.
 </div>
 
 <div class="signature">Deep</div>
-
 </div>
 </div>
 
 <script>
 
 /* STORY */
-const storyImages=["image1.jpg","image2.jpg","image3.jpg"];
-let current=0;
-const storyImg=document.getElementById("storyImg");
+const images=["image1.jpg","image2.jpg","image3.jpg"];
+let index=0;
+const storyImg=document.getElementById("storyImage");
 const enterBtn=document.getElementById("enterBtn");
 
-function loadStory(){
-storyImg.style.backgroundImage=`url(${storyImages[current]})`;
-if(current===2){ enterBtn.style.display="block"; }
-else{ enterBtn.style.display="none"; }
+function updateStory(){
+storyImg.style.backgroundImage=`url(${images[index]})`;
+enterBtn.style.display=(index===2)?"block":"none";
+navigator.vibrate?.(10);
 }
-function next(){ if(current<2){current++; loadStory();}}
-function prev(){ if(current>0){current--; loadStory();}}
-loadStory();
+updateStory();
+
+storyImg.addEventListener("click",()=>{
+if(index<2){ index++; updateStory(); }
+});
 
 function enterSite(){
-document.getElementById("story").style.opacity="0";
-setTimeout(()=>{
 document.getElementById("story").style.display="none";
-document.getElementById("main").style.display="flex";
-},800);
+document.getElementById("main").style.display="block";
 }
 
-/* SECTIONS */
-function openSection(title,isVideo=false){
+/* SONG DATA */
+const songs={
+morning:[
+["Late night pull","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
+["Unspoken comfort","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
+["Still choosing you","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
+["Soft presence","https://open.spotify.com/embed/track/0xIuPDzJSnJywALez8dwKR"]
+],
+day:[
+["Quiet strength","https://open.spotify.com/embed/track/2NTtfjk6ShR9uQcKJh1yX9"],
+["Slow warmth","https://open.spotify.com/embed/track/1tUYdjPkVHi9u0ecaFgnmD"],
+["Calm return","https://open.spotify.com/embed/track/7IU3w87VCx7qiar56GQ5OI"],
+["Gentle light","https://open.spotify.com/embed/track/0K5LSPVXxIR30OlB3MHjN6"]
+],
+dusk:[
+["Fading distance","https://open.spotify.com/embed/track/5GnF4uvEcIibqcoYgzIlgS"],
+["Golden silence","https://open.spotify.com/embed/track/0CTLV9Fr5CEkvhqmBjvEIU"],
+["Almost home","https://open.spotify.com/embed/track/3zsrxaFaZFBrNY1EM69wMm"],
+["Soft hope","https://open.spotify.com/embed/track/7G7b3jsvPETNyccazdsubE"]
+],
+night:[
+["Midnight truth","https://open.spotify.com/embed/track/3tOY2szKRlRHyTIETz4dSs"],
+["Still here","https://open.spotify.com/embed/track/7wGgYAOMhhRObOGdWlJ9Hi"],
+["Charmer","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"],
+["Noor","https://open.spotify.com/embed/track/7fRMmRAL9vN7eOCw1t03T3"]
+]
+};
+
+function openSection(type){
+navigator.vibrate?.(20);
 document.getElementById("modal").style.display="flex";
-document.getElementById("modalTitle").innerText=title;
+document.getElementById("modalTitle").innerText=type.charAt(0).toUpperCase()+type.slice(1);
 
-document.getElementById("player").style.display="none";
-document.getElementById("videoSection").style.display="none";
 document.getElementById("songGrid").innerHTML="";
+document.getElementById("player").style.display="none";
+document.getElementById("sectionVideo").style.display="none";
+document.getElementById("endText").style.opacity=0;
 
-if(isVideo){
-document.getElementById("videoSection").style.display="flex";
-return;
-}
-
-/* Example Songs */
-const songs=[
-["Soft Beginning","A quiet warmth 🌤","https://open.spotify.com/embed/track/0XwRlvv3KlOu4HWlOH34XG"],
-["Stay Close","Right here 🤍","https://open.spotify.com/embed/track/2gupOLBb6OGYAWai6nlmDv"],
-["Gentle Light","Slow calm ✨","https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE"],
-["Midnight Echo","Still here 🌙","https://open.spotify.com/embed/track/1F2sn8iJA607Xfz1K3d9dJ"]
-];
-
-songs.forEach(s=>{
-let div=document.createElement("div");
-div.className="song";
-div.innerHTML=`${s[0]}<small>${s[1]}</small>`;
-div.onclick=()=>playSong(s[2]);
+if(type==="video"){
+document.getElementById("sectionVideo").style.display="block";
+document.getElementById("sectionVideo").onended=()=>{
+document.getElementById("endText").style.opacity=1;
+};
+}else{
+songs[type].forEach(song=>{
+const div=document.createElement("div");
+div.className="song-card";
+div.innerText=song[0];
+div.onclick=()=>playSong(song[1]);
 document.getElementById("songGrid").appendChild(div);
 });
 }
+}
 
 function playSong(link){
+navigator.vibrate?.(10);
 const player=document.getElementById("player");
 player.innerHTML=`<iframe src="${link}" allow="autoplay; clipboard-write; encrypted-media;"></iframe>`;
 player.style.display="block";
 }
 
-function closeModal(e){
-if(e.target.id==="modal"){
+function closeModal(){
 document.getElementById("modal").style.display="none";
-document.getElementById("player").style.display="none";
+document.getElementById("sectionVideo").pause();
 }
-}
-
-function closeVideo(){
-document.getElementById("videoSection").style.display="none";
-}
-
 </script>
 
 </body>
